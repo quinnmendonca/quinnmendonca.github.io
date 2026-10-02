@@ -1,153 +1,136 @@
 @import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap");
 
 
-/* BASIC */
-
 * {
     box-sizing: border-box;
 }
 
-html {
-    scroll-behavior: smooth;
-}
 
 body {
     margin: 0;
 
-    background: #f3f3f0;
-    color: #111;
+    background: #f5f5f2;
+    color: #202020;
 
     font-family: "Instrument Sans", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
 }
+
 
 a {
-    color: inherit;
+    color: #202020;
+    text-underline-offset: 3px;
 }
 
-main,
+
+/* PAGE WIDTH */
+
 nav,
+main,
 footer {
-    width: calc(100% - 96px);
-    max-width: 1280px;
+    width: calc(100% - 64px);
+    max-width: 1050px;
 
     margin-left: auto;
     margin-right: auto;
-}
-
-.eyebrow {
-    margin: 0;
-
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.13em;
-
-    text-transform: uppercase;
 }
 
 
 /* NAV */
 
 nav {
-    height: 78px;
+    padding: 32px 0;
 
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+
+    border-bottom: 1px solid #aaa;
 }
 
-.logo {
-    color: #111;
 
-    font-size: 16px;
-    font-weight: 600;
-
+.site-name {
+    font-size: 18px;
+    font-weight: 500;
     text-decoration: none;
 }
+
 
 .nav-links {
     display: flex;
-    gap: 27px;
+    gap: 24px;
 }
+
 
 .nav-links a {
-    color: #111;
-
-    font-size: 12px;
-    text-decoration: none;
-}
-
-.nav-links a:hover {
-    text-decoration: underline;
+    font-size: 14px;
 }
 
 
 /* INTRO */
 
 .intro {
-    max-width: 850px;
+    max-width: 680px;
 
-    padding: 90px 0 120px;
+    padding: 65px 0 85px;
 }
 
-.intro h1 {
-    margin: 18px 0 32px;
 
-    font-size: clamp(42px, 5vw, 68px);
-    font-weight: 400;
-    line-height: 1;
+.intro p {
+    margin: 0 0 14px;
 
-    letter-spacing: -0.05em;
+    font-size: 19px;
+    line-height: 1.55;
 }
 
-.intro-text {
-    max-width: 650px;
 
+.intro p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* NORMAL SECTION HEADINGS */
+
+section > h1 {
     margin: 0;
 
-    font-size: 20px;
-    line-height: 1.5;
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid #777;
+
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
 }
 
 
 /* PROJECTS */
 
-.projects {
-    border-top: 1px solid #111;
-}
+.project {
+    padding: 50px 0 65px;
 
-.section-label {
-    padding: 19px 0;
-    border-bottom: 1px solid #c8c8c3;
+    border-bottom: 1px solid #bbb;
 }
 
 
-/* MAIN PROJECT */
-
-.main-project {
-    padding: 65px 0 110px;
+.project-heading {
+    margin-bottom: 25px;
 }
 
-.project-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
 
-    gap: 40px;
+.project-heading h2 {
+    margin: 0 0 7px;
 
-    margin-bottom: 28px;
-}
-
-.project-title h2 {
-    margin: 0 0 9px;
-
-    font-size: clamp(42px, 5vw, 68px);
+    font-size: 36px;
     font-weight: 400;
+    line-height: 1.15;
 
-    letter-spacing: -0.05em;
+    letter-spacing: -0.025em;
 }
 
-.project-date,
-.status {
+
+.small-label {
     margin: 0;
 
     font-size: 9px;
@@ -155,38 +138,31 @@ nav {
     letter-spacing: 0.12em;
 
     text-transform: uppercase;
-}
 
-.project-date {
-    opacity: 0.45;
-}
-
-.status {
-    margin-bottom: 7px;
+    opacity: 0.55;
 }
 
 
 /* PCB IMAGE */
 
-.board-image {
-    display: block;
-
+.project-image {
     width: 100%;
 
-    color: inherit;
-    text-decoration: none;
+    margin: 0 0 27px;
 }
 
-.board-image img {
+
+.project-image img {
     display: block;
 
     width: 100%;
     height: auto;
 }
 
-.image-placeholder {
+
+.placeholder {
     width: 100%;
-    min-height: 500px;
+    height: 470px;
 
     display: flex;
     align-items: center;
@@ -194,141 +170,86 @@ nav {
 
     background: #deded9;
 
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-
-    color: #8c8c87;
-}
-
-
-/* DESCRIPTION */
-
-.board-description {
-    max-width: 720px;
-
-    margin: 32px 0 27px;
-}
-
-.board-description > p:first-child {
-    margin: 0;
-
-    font-size: 17px;
-    line-height: 1.55;
-}
-
-.board-details {
-    margin: 19px 0 0;
-
     font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-
-    text-transform: uppercase;
-}
-
-.text-link {
-    font-size: 14px;
-    text-underline-offset: 4px;
-}
-
-
-/* OTHER PROJECTS */
-
-.other-projects {
-    max-width: 900px;
-
-    padding: 0 0 130px;
-}
-
-.other-projects > .eyebrow {
-    padding-bottom: 17px;
-
-    border-bottom: 1px solid #111;
-}
-
-.small-project {
-    padding: 35px 0 40px;
-
-    border-bottom: 1px solid #c8c8c3;
-}
-
-.small-project h2 {
-    margin: 0 0 13px;
-
-    font-size: 30px;
-    font-weight: 400;
-
-    letter-spacing: -0.035em;
-}
-
-.small-project > p:not(.small-meta) {
-    max-width: 600px;
-
-    margin: 0;
-
-    font-size: 14px;
-    line-height: 1.55;
-}
-
-.small-meta {
-    margin: 18px 0 0;
-
-    font-size: 9px;
-    font-weight: 500;
     letter-spacing: 0.1em;
 
-    text-transform: uppercase;
+    color: #777;
+}
 
-    opacity: 0.45;
+
+/* PROJECT TEXT */
+
+.project-description {
+    max-width: 700px;
+
+    margin: 0 0 13px;
+}
+
+
+.project-note {
+    margin: 0 0 20px;
+
+    font-size: 14px;
+    font-style: italic;
+
+    color: #555;
+}
+
+
+.project-link {
+    font-size: 15px;
+}
+
+
+.simple-project {
+    max-width: 800px;
+}
+
+
+.simple-project .project-description {
+    margin-bottom: 0;
 }
 
 
 /* ABOUT */
 
 .about {
-    max-width: 900px;
+    max-width: 800px;
 
-    padding: 90px 0 130px;
-
-    border-top: 1px solid #111;
+    padding: 90px 0 100px;
 }
 
-.about-text {
-    max-width: 760px;
 
-    margin: 30px 0 35px;
-
-    font-size: 25px;
-    line-height: 1.4;
-
-    letter-spacing: -0.025em;
+.about > h1 {
+    margin-bottom: 30px;
 }
 
-.about-links {
-    display: flex;
-    gap: 30px;
+
+.about > p {
+    max-width: 680px;
+
+    margin: 0 0 17px;
 }
 
-.about-links a {
-    font-size: 13px;
 
-    text-underline-offset: 4px;
+.contact {
+    margin-top: 35px !important;
+    line-height: 1.9;
 }
 
 
 /* FOOTER */
 
 footer {
-    padding: 24px 0 30px;
+    padding: 22px 0 35px;
 
-    display: flex;
-    justify-content: space-between;
+    border-top: 1px solid #aaa;
 
-    border-top: 1px solid #111;
+    font-size: 11px;
 
-    font-size: 10px;
+    color: #666;
 }
+
 
 footer p {
     margin: 0;
@@ -339,107 +260,65 @@ footer p {
 
 @media (max-width: 700px) {
 
-    main,
     nav,
+    main,
     footer {
-        width: calc(100% - 40px);
+        width: calc(100% - 36px);
     }
 
 
     nav {
-        height: 65px;
+        padding: 24px 0;
     }
 
+
+    .site-name {
+        font-size: 16px;
+    }
+
+
     .nav-links {
-        gap: 17px;
+        gap: 15px;
+    }
+
+
+    .nav-links a {
+        font-size: 12px;
     }
 
 
     .intro {
-        padding: 65px 0 85px;
+        padding: 50px 0 65px;
     }
 
-    .intro h1 {
-        margin-top: 15px;
 
-        font-size: 43px;
-    }
-
-    .intro-text {
+    .intro p {
         font-size: 17px;
     }
 
 
-    .main-project {
-        padding: 45px 0 80px;
-    }
-
-    .project-title {
-        display: block;
-    }
-
-    .project-title h2 {
-        font-size: 43px;
-    }
-
-    .status {
-        margin-top: 22px;
-    }
-
-    .image-placeholder {
-        min-height: 300px;
-    }
-
-    .board-description {
-        margin-top: 25px;
-    }
-
-    .board-description > p:first-child {
-        font-size: 15px;
+    section > h1 {
+        font-size: 28px;
     }
 
 
-    .other-projects {
-        padding-bottom: 90px;
+    .project {
+        padding: 38px 0 50px;
     }
 
-    .small-project {
-        padding: 28px 0 32px;
+
+    .project-heading h2 {
+        font-size: 30px;
     }
 
-    .small-project h2 {
-        font-size: 27px;
+
+    .placeholder {
+        height: 280px;
     }
 
 
     .about {
-        padding: 70px 0 90px;
-    }
-
-    .about-text {
-        font-size: 22px;
-    }
-
-    .about-links {
-        display: block;
-    }
-
-    .about-links a {
-        display: block;
-        width: fit-content;
-
-        margin-top: 12px;
-    }
-
-
-    footer {
-        display: block;
-        line-height: 1.7;
-    }
-
-    footer p:last-child {
-        margin-top: 5px;
-        opacity: 0.5;
+        padding: 65px 0 80px;
     }
 
 }

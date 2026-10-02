@@ -11,7 +11,7 @@
 <body>
 
 <nav>
-    <a class="logo" href="index.html">QM</a>
+    <a class="site-name" href="index.html">Quinn Mendonca</a>
 
     <div class="nav-links">
         <a href="#projects">Projects</a>
@@ -19,123 +19,100 @@
     </div>
 </nav>
 
-
 <main>
 
     <!-- INTRO -->
-    <header class="intro">
+    <section class="intro">
 
-        <p class="eyebrow">QUINN MENDONCA</p>
-
-        <h1>Electrical Engineering at UCLA</h1>
-
-        <p class="intro-text">
-            I work on the high-voltage systems for UCLA's Formula SAE
-            electric car. These are some of the things I've worked on.
+        <p>
+            Electrical Engineering student at UCLA and High Voltage Systems
+            Integration Lead for Bruin Formula Racing.
         </p>
 
-    </header>
+        <p>
+            I mostly work on high-voltage and analog electronics for our
+            Formula SAE EV.
+        </p>
+
+    </section>
 
 
     <!-- PROJECTS -->
-    <section id="projects" class="projects">
+    <section id="projects">
 
-        <p class="eyebrow section-label">PROJECTS</p>
+        <h1>Projects</h1>
 
 
         <!-- HV CONTROL BOARD -->
-        <article class="main-project">
+        <article class="project">
 
-            <div class="project-title">
-
-                <div>
-                    <h2>HV Control Board</h2>
-                    <p class="project-date">2026–27 FORMULA SAE EV</p>
-                </div>
-
-                <p class="status">VALIDATION IN PROGRESS</p>
-
+            <div class="project-heading">
+                <h2>HV Control Board</h2>
+                <p class="small-label">2026–27 / FORMULA SAE EV</p>
             </div>
 
+            <div class="project-image">
 
-            <a href="projects/hv-control-board.html" class="board-image">
-
-                <!--
-                When you have your PCB render, replace the placeholder below with:
-
+                <!-- Replace this with your PCB render later:
                 <img src="images/hv-control-board.png"
                      alt="HV Control Board PCB render">
                 -->
 
-                <div class="image-placeholder">
-                    PUT PCB RENDER HERE
+                <div class="placeholder">
+                    PCB RENDER
                 </div>
-
-            </a>
-
-
-            <div class="board-description">
-
-                <p>
-                    The main HV control board for our accumulator. It handles
-                    precharge, discharge, HV-present detection, AIR weld
-                    detection, and other HV/LV interfacing.
-                </p>
-
-                <p class="board-details">
-                    478.8 V &nbsp;·&nbsp; 4-layer PCB &nbsp;·&nbsp;
-                    KiCad
-                </p>
 
             </div>
 
+            <p class="project-description">
+                4-layer control board for our 478.8 V accumulator. It handles
+                precharge, discharge, HV-present detection, AIR weld detection,
+                relay control, and other accumulator electronics.
+            </p>
 
-            <a class="text-link"
+            <p class="project-note">
+                Currently testing the 2026–27 revision.
+            </p>
+
+            <a class="project-link"
                href="projects/hv-control-board.html">
-                View the project →
+                View project →
             </a>
 
         </article>
 
 
-        <!-- OTHER PROJECTS -->
-        <div class="other-projects">
+        <!-- HV SYSTEMS -->
+        <article class="project simple-project">
 
-            <p class="eyebrow">OTHER PROJECTS</p>
-
-
-            <article class="small-project">
-
+            <div class="project-heading">
                 <h2>HV Systems Integration</h2>
+                <p class="small-label">FORMULA SAE EV</p>
+            </div>
 
-                <p>
-                    Accumulator architecture, harnessing, packaging, and
-                    electrical integration for our 114s6p pack.
-                </p>
+            <p class="project-description">
+                Electrical architecture and integration for our 114s6p
+                accumulator, including HV/LV distribution, harnessing,
+                component layout, and packaging.
+            </p>
 
-                <p class="small-meta">
-                    478.8 V / 7.35 KWH
-                </p>
-
-            </article>
+        </article>
 
 
-            <article class="small-project">
+        <!-- SIMULATION -->
+        <article class="project simple-project">
 
+            <div class="project-heading">
                 <h2>EV Lap & Battery Simulation</h2>
+                <p class="small-label">MATLAB / 2025–26</p>
+            </div>
 
-                <p>
-                    The MATLAB simulation we use for pack sizing and looking
-                    at energy use, voltage sag, temperatures, and torque limits.
-                </p>
+            <p class="project-description">
+                MATLAB model I've been developing for pack sizing, energy use,
+                voltage sag, battery temperature, and current-limited torque.
+            </p>
 
-                <p class="small-meta">
-                    MATLAB / 2025–26
-                </p>
-
-            </article>
-
-        </div>
+        </article>
 
     </section>
 
@@ -143,23 +120,28 @@
     <!-- ABOUT -->
     <section id="about" class="about">
 
-        <p class="eyebrow">ABOUT</p>
+        <h1>About</h1>
 
-        <p class="about-text">
-            I'm an Electrical Engineering student at UCLA and the
-            High Voltage Systems Integration Lead for Bruin Formula Racing.
-            I'm mainly interested in analog, high-voltage, and power electronics.
+        <p>
+            I'm an Electrical Engineering student at UCLA. I'm mainly interested
+            in analog, high-voltage, and power electronics, especially for
+            automotive and motorsport applications.
         </p>
 
-        <div class="about-links">
+        <p>
+            I'm currently the High Voltage Systems Integration Lead for
+            Bruin Formula Racing.
+        </p>
+
+        <p class="contact">
             <a href="mailto:quinnmendonca@ucla.edu">
                 quinnmendonca@ucla.edu
             </a>
-
+            <br>
             <a href="https://www.linkedin.com/in/quinn-mendonca">
-                LinkedIn ↗
+                LinkedIn
             </a>
-        </div>
+        </p>
 
     </section>
 
@@ -167,9 +149,9 @@
 
 
 <footer>
-    <p>Quinn Mendonca</p>
     <p>Last updated October 2026</p>
 </footer>
 
 </body>
+
 </html>
