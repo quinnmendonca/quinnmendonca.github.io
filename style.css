@@ -1,9 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap');
-
-
-/* =========================
-   BASE
-   ========================= */
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap");
 
 * {
     box-sizing: border-box;
@@ -15,11 +10,9 @@ html {
 
 body {
     margin: 0;
-
-    background: #f2f2ef;
-    color: #111111;
-
-    font-family: "Instrument Sans", sans-serif;
+    background: #f3f3f0;
+    color: #111;
+    font-family: "Instrument Sans", Arial, sans-serif;
     font-weight: 400;
 }
 
@@ -28,17 +21,12 @@ a {
     text-decoration: none;
 }
 
-
-/* =========================
-   NAVIGATION
-   ========================= */
-
 nav {
+    width: 100%;
+    max-width: 1500px;
     height: 90px;
-
-    max-width: 1440px;
     margin: auto;
-    padding: 0 45px;
+    padding: 0 48px;
 
     display: flex;
     align-items: center;
@@ -46,20 +34,19 @@ nav {
 }
 
 .logo {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 600;
     letter-spacing: -0.04em;
 }
 
 .nav-links {
     display: flex;
-    gap: 35px;
-
+    gap: 32px;
     font-size: 13px;
 }
 
 .nav-links a {
-    opacity: 0.6;
+    opacity: 0.55;
     transition: opacity 0.2s ease;
 }
 
@@ -67,100 +54,80 @@ nav {
     opacity: 1;
 }
 
-
-/* =========================
-   GLOBAL
-   ========================= */
-
 main {
-    max-width: 1440px;
+    width: 100%;
+    max-width: 1500px;
     margin: auto;
-    padding: 0 45px;
+    padding: 0 48px;
 }
 
 .label {
     margin: 0;
-
     font-size: 10px;
     font-weight: 500;
-
-    letter-spacing: 0.14em;
     line-height: 1.5;
-
+    letter-spacing: 0.14em;
     text-transform: uppercase;
 }
 
 
-/* =========================
-   HERO
-   ========================= */
+/* HERO */
 
 .hero {
     min-height: calc(100vh - 90px);
+    padding: 80px 0;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
-
-    padding: 80px 0;
 }
 
 .hero h1 {
-    margin: 28px 0 70px;
+    margin: 30px 0 70px;
 
-    max-width: 1200px;
-
-    font-size: clamp(72px, 11vw, 165px);
+    font-size: clamp(72px, 10vw, 155px);
     font-weight: 400;
-
-    line-height: 0.82;
+    line-height: 0.84;
     letter-spacing: -0.065em;
 }
 
 .hero-bottom {
+    width: min(900px, 100%);
+
     display: grid;
     grid-template-columns: 2fr 1fr;
-
-    gap: 100px;
-
-    max-width: 900px;
+    gap: 80px;
 }
 
 .hero-description {
     margin: 0;
-
-    max-width: 560px;
+    max-width: 570px;
 
     font-size: 20px;
     line-height: 1.5;
-
     letter-spacing: -0.02em;
 }
 
 .hero-school {
     margin: 0;
 
-    font-size: 12px;
-    line-height: 1.6;
-
+    font-size: 11px;
+    line-height: 1.7;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
 
-    opacity: 0.55;
+    opacity: 0.5;
 }
 
 
-/* =========================
-   PROJECTS
-   ========================= */
+/* PROJECTS */
 
 .projects {
     padding: 150px 0;
 }
 
 .section-header {
-    padding-bottom: 25px;
-
+    padding-bottom: 22px;
     border-bottom: 1px solid #111;
 
     display: flex;
@@ -168,33 +135,22 @@ main {
 }
 
 .project {
-    display: block;
-
-    padding: 80px 0 120px;
+    padding: 75px 0 120px;
 }
 
 .project-image {
     width: 100%;
     aspect-ratio: 16 / 9;
 
-    overflow: hidden;
-
     background: #deded9;
+    overflow: hidden;
 }
 
 .project-image img {
     display: block;
-
     width: 100%;
     height: 100%;
-
     object-fit: cover;
-
-    transition: transform 0.6s ease;
-}
-
-.project:hover .project-image img {
-    transform: scale(1.01);
 }
 
 .image-placeholder {
@@ -205,81 +161,91 @@ main {
     align-items: center;
     justify-content: center;
 
+    color: #92928e;
+
     font-size: 10px;
     font-weight: 500;
-
     letter-spacing: 0.15em;
-
-    color: #999;
 }
 
 .project-meta {
-    padding-top: 28px;
+    padding-top: 26px;
 
     display: flex;
     justify-content: space-between;
-
     gap: 80px;
 }
 
 .project-meta h2 {
-    margin: 16px 0 0;
+    margin: 15px 0 25px;
 
-    font-size: clamp(30px, 4vw, 54px);
+    font-size: clamp(32px, 4vw, 54px);
     font-weight: 400;
-
     line-height: 1.02;
     letter-spacing: -0.045em;
 }
 
 .project-tags {
     margin: 0;
-
     min-width: 150px;
 
     font-size: 10px;
     line-height: 1.8;
-
     letter-spacing: 0.12em;
-
     text-transform: uppercase;
 
     opacity: 0.5;
 }
 
+.project-link {
+    display: inline-block;
 
-/* =========================
-   ABOUT
-   ========================= */
+    padding-bottom: 4px;
+    border-bottom: 1px solid #111;
+
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+}
+
+.project-link:hover {
+    opacity: 0.5;
+}
+
+.project-coming-soon {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    opacity: 0.35;
+}
+
+
+/* ABOUT */
 
 .about {
-    padding: 180px 0 220px;
-
+    padding: 180px 0 210px;
     border-top: 1px solid #111;
 }
 
 .about-text {
+    max-width: 1050px;
     margin: 45px 0 0;
 
-    max-width: 1050px;
-
-    font-size: clamp(36px, 5vw, 68px);
+    font-size: clamp(36px, 5vw, 67px);
     font-weight: 400;
-
     line-height: 1.08;
     letter-spacing: -0.045em;
 }
 
 
-/* =========================
-   FOOTER
-   ========================= */
+/* FOOTER */
 
 footer {
-    max-width: 1440px;
+    width: calc(100% - 96px);
+    max-width: 1404px;
 
     margin: auto;
-    padding: 30px 45px;
+    padding: 28px 0;
 
     border-top: 1px solid #111;
 
@@ -288,16 +254,18 @@ footer {
 
     font-size: 10px;
     font-weight: 500;
-
     letter-spacing: 0.12em;
-
     text-transform: uppercase;
+}
+
+footer p {
+    margin: 0;
 }
 
 footer div {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 28px;
 }
 
 footer > p:last-child {
@@ -305,55 +273,84 @@ footer > p:last-child {
 }
 
 
-/* =========================
-   MOBILE
-   ========================= */
+/* TABLET */
 
-@media (max-width: 700px) {
+@media (max-width: 900px) {
 
-    nav {
-        height: 70px;
-        padding: 0 20px;
+    .hero h1 {
+        font-size: clamp(70px, 14vw, 120px);
     }
 
-    main {
+    .hero-bottom {
+        grid-template-columns: 1.5fr 1fr;
+        gap: 40px;
+    }
+
+    .about-text {
+        font-size: 45px;
+    }
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 650px) {
+
+    nav {
+        height: 68px;
         padding: 0 20px;
     }
 
     .nav-links {
-        gap: 15px;
+        gap: 18px;
+        font-size: 11px;
     }
 
     .nav-links a:nth-child(2) {
         display: none;
     }
 
+    main {
+        padding: 0 20px;
+    }
+
     .hero {
-        min-height: calc(100vh - 70px);
+        min-height: calc(100svh - 68px);
+        padding: 55px 0;
     }
 
     .hero h1 {
-        font-size: clamp(60px, 20vw, 100px);
+        margin: 22px 0 45px;
 
-        margin-top: 25px;
-        margin-bottom: 50px;
+        font-size: clamp(58px, 19vw, 90px);
+        line-height: 0.88;
+        letter-spacing: -0.06em;
     }
 
     .hero-bottom {
-        grid-template-columns: 1fr;
-        gap: 30px;
+        display: block;
     }
 
     .hero-description {
         font-size: 17px;
+        line-height: 1.5;
+    }
+
+    .hero-school {
+        margin-top: 35px;
     }
 
     .projects {
-        padding-top: 100px;
+        padding: 90px 0;
+    }
+
+    .section-header {
+        padding-bottom: 16px;
     }
 
     .project {
-        padding: 50px 0 90px;
+        padding: 45px 0 80px;
     }
 
     .project-image {
@@ -362,25 +359,41 @@ footer > p:last-child {
 
     .project-meta {
         display: block;
+        padding-top: 20px;
+    }
+
+    .project-meta h2 {
+        margin: 12px 0 22px;
+
+        font-size: 34px;
+        line-height: 1.04;
     }
 
     .project-tags {
-        margin-top: 25px;
+        margin-top: 30px;
     }
 
     .about {
-        padding: 100px 0 130px;
+        padding: 100px 0 120px;
+    }
+
+    .about-text {
+        margin-top: 30px;
+
+        font-size: 34px;
+        line-height: 1.1;
     }
 
     footer {
-        margin: 0 20px;
-        padding: 25px 0;
+        width: calc(100% - 40px);
+        padding: 22px 0;
 
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr auto;
     }
 
     footer div {
         justify-content: flex-end;
+        gap: 15px;
     }
 
     footer > p:last-child {
