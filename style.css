@@ -29,15 +29,32 @@ footer {
     margin-right: auto;
 }
 
+.label {
+    margin: 0;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.muted {
+    opacity: 0.42;
+}
+
+
+/* NAV */
+
 nav {
-    height: 82px;
+    height: 80px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
 .logo {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 600;
     letter-spacing: -0.04em;
 }
@@ -56,124 +73,94 @@ nav {
     opacity: 1;
 }
 
-.label {
-    margin: 0;
-    font-size: 10px;
-    font-weight: 500;
-    line-height: 1.5;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-}
-
 
 /* INTRO */
 
 .intro {
-    padding: 70px 0 90px;
+    padding: 65px 0 100px;
 }
 
-.intro-top {
+.intro-header {
     display: flex;
     justify-content: space-between;
-    padding-bottom: 22px;
+
+    padding-bottom: 20px;
     border-bottom: 1px solid #111;
 }
 
-.intro-location {
-    opacity: 0.4;
-}
+.intro-text {
+    max-width: 720px;
 
-.intro-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding-top: 40px;
-}
+    margin: 45px 0 0;
 
-.intro-description {
-    max-width: 600px;
-    margin: 0;
-
-    font-size: 23px;
-    line-height: 1.4;
-    letter-spacing: -0.025em;
-}
-
-.intro-meta {
-    margin: 0;
-
-    font-size: 9px;
-    line-height: 1.8;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-
-    opacity: 0.4;
+    font-size: clamp(28px, 3.3vw, 48px);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.04em;
 }
 
 
-/* FEATURED PROJECT */
+/* PROJECTS */
 
-.featured {
-    padding: 80px 0 145px;
-    border-top: 1px solid #111;
+.projects {
+    padding-bottom: 150px;
 }
 
-.featured-heading {
+.section-header {
+    padding-bottom: 18px;
+    border-bottom: 1px solid #111;
+}
+
+
+/* FEATURED */
+
+.featured-project {
+    padding: 60px 0 120px;
+}
+
+.project-heading {
     display: grid;
-    grid-template-columns: 1.6fr 1fr;
-    gap: 100px;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 80px;
+
     align-items: end;
 
-    margin-bottom: 45px;
+    margin-bottom: 35px;
 }
 
-.featured-heading h1 {
-    margin: 15px 0 0;
+.project-heading h1 {
+    margin: 12px 0 0;
 
-    font-size: clamp(64px, 8vw, 118px);
+    font-size: clamp(52px, 6vw, 88px);
     font-weight: 400;
-    line-height: 0.86;
-    letter-spacing: -0.065em;
+    line-height: 0.95;
+    letter-spacing: -0.055em;
 }
 
-.featured-info {
-    padding-bottom: 4px;
-}
+.project-summary {
+    max-width: 390px;
 
-.featured-info .label {
-    margin-bottom: 24px;
-    opacity: 0.45;
-}
+    margin: 0 0 5px;
 
-.featured-info > p:last-child {
-    max-width: 420px;
-    margin: 0;
-
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.55;
 }
 
-.featured-image {
+.project-image {
     width: 100%;
     aspect-ratio: 16 / 8.5;
 
-    overflow: hidden;
     background: #deded9;
+    overflow: hidden;
 }
 
-.featured-image img {
+.project-image img {
     display: block;
 
     width: 100%;
     height: 100%;
 
     object-fit: cover;
-
-    transition: transform 0.4s ease;
-}
-
-.featured-image-link:hover img {
-    transform: scale(1.008);
 }
 
 .image-placeholder {
@@ -184,126 +171,114 @@ nav {
     align-items: center;
     justify-content: center;
 
-    color: #8b8b86;
-
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 500;
     letter-spacing: 0.15em;
+
+    color: #8c8c87;
 }
 
-.featured-bottom {
+.project-footer {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
 
-    gap: 50px;
-    padding-top: 24px;
+    gap: 40px;
+
+    padding-top: 22px;
 }
 
-.specs {
+.project-specs {
     display: flex;
-    flex-wrap: wrap;
     gap: 45px;
 }
 
-.specs div {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
+.project-specs p {
+    margin: 0;
 
-.specs span {
-    font-size: 8px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    opacity: 0.4;
-}
-
-.specs strong {
     font-size: 9px;
     font-weight: 500;
+    line-height: 1.5;
     letter-spacing: 0.08em;
 }
 
-.view-project {
+.project-specs span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 8px;
+    letter-spacing: 0.12em;
+
+    opacity: 0.4;
+}
+
+.project-link {
     flex-shrink: 0;
 
-    padding-bottom: 4px;
+    padding-bottom: 3px;
     border-bottom: 1px solid #111;
 
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 500;
     letter-spacing: 0.13em;
 }
 
-.view-project:hover {
+.project-link:hover {
     opacity: 0.5;
 }
 
 
-/* SELECTED WORK */
+/* PROJECT LIST */
 
-.selected-work {
-    padding-bottom: 160px;
+.project-list {
+    border-top: 1px solid #111;
 }
 
-.section-title {
-    padding-bottom: 20px;
-    border-bottom: 1px solid #111;
-}
-
-.work-row {
+.project-row {
     display: grid;
-    grid-template-columns: 65px 1fr 180px;
+    grid-template-columns: 60px 1fr 180px;
     gap: 30px;
 
-    padding: 42px 0;
+    padding: 38px 0;
 
-    border-bottom: 1px solid #c7c7c2;
+    border-bottom: 1px solid #c8c8c3;
 }
 
-.work-number {
-    margin: 4px 0 0;
+.project-number {
+    margin: 3px 0 0;
 
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 500;
     letter-spacing: 0.12em;
 
     opacity: 0.4;
 }
 
-.work-category {
-    margin: 0 0 12px;
+.project-row h2 {
+    margin: 9px 0 10px;
 
-    font-size: 8px;
-    font-weight: 500;
-    letter-spacing: 0.13em;
-
-    opacity: 0.4;
-}
-
-.work-row h2 {
-    margin: 0 0 12px;
-
-    font-size: clamp(28px, 3vw, 42px);
+    font-size: clamp(26px, 2.7vw, 39px);
     font-weight: 400;
+    line-height: 1.05;
     letter-spacing: -0.04em;
 }
 
-.work-description {
-    max-width: 600px;
+.row-description {
+    max-width: 570px;
+
     margin: 0;
 
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.5;
 
     opacity: 0.55;
 }
 
-.work-meta {
-    margin: 3px 0 0;
+.row-meta {
+    margin: 2px 0 0;
 
-    font-size: 9px;
+    font-size: 8px;
     line-height: 1.8;
     letter-spacing: 0.12em;
 
@@ -316,32 +291,32 @@ nav {
 /* ABOUT */
 
 .about {
-    padding: 120px 0 160px;
+    padding: 100px 0 140px;
     border-top: 1px solid #111;
 }
 
-.about-grid {
+.about-content {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 100px;
+    gap: 90px;
 
-    margin-top: 45px;
+    margin-top: 40px;
 }
 
 .about-main {
-    max-width: 850px;
+    max-width: 780px;
+
     margin: 0;
 
-    font-size: clamp(36px, 4.5vw, 62px);
-    line-height: 1.08;
-    letter-spacing: -0.045em;
+    font-size: clamp(32px, 4vw, 55px);
+    line-height: 1.1;
+    letter-spacing: -0.04em;
 }
 
-.about-secondary {
-    max-width: 330px;
-    margin: 5px 0 0;
+.about-side {
+    margin: 4px 0 0;
 
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.6;
 }
 
@@ -349,7 +324,7 @@ nav {
 /* FOOTER */
 
 footer {
-    padding: 27px 0;
+    padding: 25px 0;
 
     border-top: 1px solid #111;
 
@@ -370,7 +345,7 @@ footer p {
 footer div {
     display: flex;
     justify-content: center;
-    gap: 28px;
+    gap: 25px;
 }
 
 footer > p:last-child {
@@ -389,7 +364,7 @@ footer > p:last-child {
     }
 
     nav {
-        height: 65px;
+        height: 64px;
     }
 
     .nav-links {
@@ -403,128 +378,110 @@ footer > p:last-child {
 
 
     .intro {
-        padding: 50px 0 65px;
+        padding: 45px 0 70px;
     }
 
-    .intro-top {
-        padding-bottom: 16px;
+    .intro-header {
+        padding-bottom: 15px;
     }
 
-    .intro-location {
+    .intro-header .muted {
         display: none;
     }
 
-    .intro-content {
-        display: block;
-        padding-top: 27px;
-    }
+    .intro-text {
+        margin-top: 28px;
 
-    .intro-description {
-        font-size: 19px;
-    }
-
-    .intro-meta {
-        margin-top: 27px;
+        font-size: 29px;
+        line-height: 1.13;
     }
 
 
-    .featured {
-        padding: 65px 0 95px;
-    }
-
-    .featured-heading {
-        display: block;
-        margin-bottom: 32px;
-    }
-
-    .featured-heading h1 {
-        margin-top: 13px;
-
-        font-size: clamp(56px, 18vw, 82px);
-        line-height: 0.88;
-    }
-
-    .featured-info {
-        margin-top: 35px;
-    }
-
-    .featured-info .label {
-        margin-bottom: 16px;
-    }
-
-    .featured-info > p:last-child {
-        font-size: 14px;
-    }
-
-    .featured-image {
-        aspect-ratio: 4 / 3;
-    }
-
-    .featured-bottom {
-        display: block;
-    }
-
-    .specs {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-
-        gap: 20px 25px;
-
-        margin-bottom: 35px;
-    }
-
-
-    .selected-work {
+    .projects {
         padding-bottom: 95px;
     }
 
-    .work-row {
-        grid-template-columns: 32px 1fr;
+    .featured-project {
+        padding: 45px 0 85px;
+    }
+
+    .project-heading {
+        display: block;
+        margin-bottom: 27px;
+    }
+
+    .project-heading h1 {
+        font-size: 53px;
+    }
+
+    .project-summary {
+        margin-top: 25px;
+        font-size: 14px;
+    }
+
+    .project-image {
+        aspect-ratio: 4 / 3;
+    }
+
+    .project-footer {
+        display: block;
+    }
+
+    .project-specs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        gap: 18px 25px;
+
+        margin-bottom: 30px;
+    }
+
+
+    .project-row {
+        grid-template-columns: 30px 1fr;
+
         gap: 10px;
 
-        padding: 30px 0;
+        padding: 28px 0;
     }
 
-    .work-category {
-        margin-bottom: 9px;
+    .project-row h2 {
+        font-size: 27px;
     }
 
-    .work-row h2 {
-        font-size: 28px;
-    }
-
-    .work-meta {
+    .row-meta {
         grid-column: 2;
-        margin-top: 15px;
+        margin-top: 13px;
     }
 
 
     .about {
-        padding: 85px 0 105px;
+        padding: 80px 0 100px;
     }
 
-    .about-grid {
+    .about-content {
         display: block;
-        margin-top: 28px;
+        margin-top: 27px;
     }
 
     .about-main {
-        font-size: 33px;
+        font-size: 31px;
     }
 
-    .about-secondary {
-        margin-top: 35px;
+    .about-side {
+        margin-top: 30px;
     }
 
 
     footer {
-        padding: 21px 0;
+        padding: 20px 0;
+
         grid-template-columns: 1fr auto;
     }
 
     footer div {
         justify-content: flex-end;
-        gap: 14px;
+        gap: 13px;
     }
 
     footer > p:last-child {
