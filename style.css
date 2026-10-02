@@ -321,4 +321,271 @@ footer p {
         padding: 65px 0 80px;
     }
 
+}/* ========================================
+   PROJECT PAGE
+   ======================================== */
+
+.project-page {
+    max-width: 900px;
+}
+
+
+/* INTRO */
+
+.project-intro {
+    padding: 65px 0 55px;
+}
+
+.back-link {
+    display: inline-block;
+
+    margin-bottom: 38px;
+
+    font-size: 13px;
+}
+
+.project-intro h1 {
+    margin: 0 0 12px;
+
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.1;
+
+    letter-spacing: -0.035em;
+}
+
+.project-subtitle {
+    margin: 0 0 35px;
+
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+
+    text-transform: uppercase;
+
+    color: #666;
+}
+
+.project-lead {
+    max-width: 700px;
+
+    margin: 0;
+
+    font-size: 19px;
+    line-height: 1.6;
+}
+
+
+/* SECTIONS */
+
+.project-section {
+    padding: 65px 0;
+
+    border-top: 1px solid #888;
+}
+
+.project-section h2 {
+    margin: 0 0 30px;
+
+    font-size: 34px;
+    font-weight: 400;
+
+    letter-spacing: -0.025em;
+}
+
+.project-section h3 {
+    margin: 42px 0 17px;
+
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.project-section > p {
+    max-width: 720px;
+
+    margin: 0 0 20px;
+
+    line-height: 1.65;
+}
+
+.project-section ul {
+    max-width: 680px;
+
+    margin: 22px 0 35px;
+    padding-left: 28px;
+}
+
+.project-section li {
+    margin-bottom: 8px;
+}
+
+
+/* IMAGES */
+
+.project-page figure {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.full-image {
+    margin-top: 0;
+    margin-bottom: 65px;
+}
+
+.content-image {
+    max-width: 760px;
+
+    margin-top: 35px;
+    margin-bottom: 35px;
+}
+
+.project-placeholder {
+    width: 100%;
+    min-height: 420px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #deded9;
+
+    color: #777;
+
+    font-size: 10px;
+    letter-spacing: 0.1em;
+}
+
+.project-placeholder.schematic {
+    min-height: 350px;
+
+    background: #fff;
+}
+
+.project-placeholder.small {
+    min-height: 260px;
+}
+
+.project-placeholder.board-layout {
+    min-height: 500px;
+}
+
+.project-placeholder.photo {
+    min-height: 400px;
+}
+
+figcaption,
+.image-note {
+    margin-top: 9px;
+
+    font-size: 11px;
+    line-height: 1.5;
+
+    color: #666;
+}
+
+
+/* TWO IMAGES */
+
+.two-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    margin: 35px 0;
+}
+
+.two-images figure {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+
+/* CALCULATIONS */
+
+.calculation-box {
+    max-width: 720px;
+
+    margin: 28px 0;
+
+    padding: 30px;
+
+    background: #e8e8e4;
+
+    font-size: 13px;
+}
+
+
+/* STATUS */
+
+.project-updated {
+    padding: 25px 0 70px;
+
+    border-top: 1px solid #888;
+
+    font-size: 10px;
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+
+    color: #666;
+}
+
+
+/* REAL IMAGES */
+
+.project-page img {
+    display: block;
+
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .project-intro {
+        padding: 45px 0;
+    }
+
+    .back-link {
+        margin-bottom: 28px;
+    }
+
+    .project-intro h1 {
+        font-size: 39px;
+    }
+
+    .project-lead {
+        font-size: 17px;
+    }
+
+    .project-section {
+        padding: 50px 0;
+    }
+
+    .project-section h2 {
+        font-size: 30px;
+    }
+
+    .two-images {
+        display: block;
+    }
+
+    .two-images figure {
+        margin-bottom: 30px;
+    }
+
+    .project-placeholder {
+        min-height: 280px;
+    }
+
+    .project-placeholder.schematic,
+    .project-placeholder.small,
+    .project-placeholder.photo,
+    .project-placeholder.board-layout {
+        min-height: 250px;
+    }
+
 }
