@@ -128,11 +128,11 @@ The precharge system must charge the inverter DC link to at least 90% of accumul
         <h2>Precharge</h2>
 
         <p>
-            The precharge circuit limits inrush current while charging the inverter's 650 µF DC-link capacitance before the main AIRs close. The final design uses two 750 Ω, 100 W pulse-rated resistors in series, giving a total precharge resistance of 1.5 kΩ.
+            The precharge circuit limits inrush current while charging the inverter's 650 µF DC-link capacitance before the accumulator isolation relays (AIRs) fully connect the pack to the vehicle. The current design uses a 2.2 kΩ precharge resistor.
 
-At the maximum pack voltage of 478.8 V, the resulting RC time constant is 0.975 s, corresponding to approximately 2.25 s to reach 90% of pack voltage. Peak precharge current is approximately 319 mA, and the resistors initially dissipate approximately 153 W combined.
+            At the maximum pack voltage of 478.8 V, the circuit has an RC time constant of 1.43 s and reaches 90% of pack voltage in approximately 3.29 s, within the 5 s requirement. Initial current is approximately 218 mA, with a peak resistor dissipation of approximately 104 W.
 
-The AIR and precharge relay drivers are controlled from the low-voltage system while switching the contactors used to connect the accumulator to the vehicle tractive system.
+            The precharge and AIR relays are controlled through low-side MOSFET drivers, with additional circuitry for monitoring the relay states.
         </p>
 
         <figure class="content-image">
@@ -189,7 +189,9 @@ Ecap = ½C   V² = 74.5 J
         <h2>Discharge</h2>
 
         <p>
-            The discharge circuit actively discharges the vehicle-side DC link after the accumulator is disconnected, bringing the tractive system below 60 V within the required shutdown time. Rather than using a mechanical discharge relay, this revision uses a solid-state implementation with high-voltage MOSFET switching and two 15 kΩ, 100 W discharge resistors.
+           The discharge circuit removes energy stored in the vehicle-side DC link after the accumulator is disconnected. The current design uses a 2.7 kΩ discharge resistor switched across the DC link by a high-voltage MOSFET, allowing the tractive system voltage to fall below 60 V after shutdown.
+
+           Rather than using a mechanical discharge relay, the board uses a solid-state switching circuit controlled through an isolated photovoltaic gate driver. This reduces the mechanical components required for the discharge path while maintaining isolation between the control and high-voltage domains.
         </p>
 
         <figure class="content-image">
