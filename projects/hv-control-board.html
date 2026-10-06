@@ -28,24 +28,24 @@
 
         <a class="back-link" href="../index.html">← Projects</a>
 
-        <h1>HV Control Board</h1>
+        <h1>HV Control Board (Ultimate HV Board)</h1>
 
         <p class="project-subtitle">
             2026–27 Formula SAE EV · Validation in progress
         </p>
 
         <p class="project-lead">
-            HV control and safety board that handles precharge, solid-state discharge, accumulator isolation relay (AIR) control, HV-present detection, welded AIR detection, tractive system measurement points (TSMPs), and the logic for the indicator light and RTM safety lights.
+            HV control and safety board that handles precharge, solid-state discharge, accumulator isolation relay (AIR) control, HV-present detection, welded AIR detection, tractive system measurement points (TSMPs), and the logic for the indicator light and RTM safety lights. Sits inside the accumulator container in a seperate section from battery cells in a 3-PCB stackup.
     </header>
 
-
+x
     <!-- MAIN BOARD IMAGE -->
 
     <figure class="full-image">
 
-        <div class="project-placeholder">
-            FULL PCB RENDER
-        </div>
+        
+        <img src="images/hv-control-board/hv-control-board.png"
+                     alt="HV Control Board PCB render">
 
         <figcaption>
             2026–27 HV Control Board (Test Version).
@@ -78,14 +78,10 @@
             <li>Ready to move (RTM) light drivers</li>
         </ul>
 
-        <div class="project-image-medium">
-            SYSTEM BLOCK DIAGRAM
-        </div>
 
-        <p class="image-note">
-            Add a block diagram showing where the board sits in the accumulator
-            and what it connects to.
-        </p>
+        <img src="images/hv-control-board/block-diagram.png"
+                     alt="HV System Block Diagram">
+
 
     </section>
 
@@ -100,7 +96,7 @@
             Explain the main constraints that drove the design. This can include
             Formula SAE rules, pack voltage, precharge/discharge timing,
             isolation, packaging, serviceability, or anything else that
-            actually affected your decisions.
+            actually affected your decisions. 
         </p>
 
         <ul>
@@ -112,6 +108,18 @@
         </ul>
 
     </section>
+
+
+    <figure class="content-image">
+             <img src="images/hv-control-board/top-level.png"
+                     alt="Top Level Schematic">
+
+            
+
+            <figcaption>
+                Top Level Schematic
+            </figcaption>
+        </figure>
 
 
     <!-- PRECHARGE -->
@@ -126,12 +134,22 @@
         </p>
 
         <figure class="content-image">
-            <div class="project-placeholder schematic">
-                PRECHARGE SCHEMATIC CROP
-            </div>
+            <img src="images/hv-control-board/precharge.png"
+                     alt="Precharge Logic">
 
             <figcaption>
                 Precharge circuit.
+            </figcaption>
+        </figure>
+
+        <figure class="content-image">
+             <img src="images/hv-control-board/AIR-driver.png"
+                     alt="Negative AIR Driver Schematic">
+
+            
+
+            <figcaption>
+                Negative AIR driver circuitry.
             </figcaption>
         </figure>
 
@@ -166,9 +184,8 @@
         </p>
 
         <figure class="content-image">
-            <div class="project-placeholder schematic">
-                DISCHARGE SCHEMATIC CROP
-            </div>
+            <img src="images/hv-control-board/discharge.png"
+                     alt="SSR Discharge Schematic">
 
             <figcaption>
                 Solid-state discharge circuit.
@@ -227,12 +244,20 @@
         </p>
 
         <figure class="content-image">
-            <div class="project-placeholder schematic">
-                HV-PRESENT SCHEMATIC CROP
-            </div>
+            <img src="images/hv-control-board/HV-present.png"
+                     alt="HV Present Logic Schematic">
 
             <figcaption>
                 HV-present detection circuit.
+            </figcaption>
+        </figure>
+
+         <figure class="content-image">
+            <img src="images/hv-control-board/RTM-LV.png"
+                     alt="RTM LV Schematic">
+
+            <figcaption>
+                RTM LV Side Circuit.
             </figcaption>
         </figure>
 
@@ -257,9 +282,10 @@
         </p>
 
         <figure class="content-image">
-            <div class="project-placeholder schematic">
-                AIR WELD DETECTION SCHEMATIC
-            </div>
+             <img src="images/hv-control-board/AIR-weld-checker.png"
+                     alt="AIR Weld Checker Schematic">
+
+            
 
             <figcaption>
                 AIR weld-detection circuitry.
