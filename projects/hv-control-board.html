@@ -61,8 +61,8 @@ x
         <h2>Overview</h2>
 
         <p>
-            Explain the board at a system level here. Don't go into individual
-            circuit details yet.
+            The HV Control Board consolidates the primary high-voltage control, monitoring, and safety functions for Bruin Formula Racing's 2026–27 Formula SAE EV accumulator. The board interfaces between the accumulator's low-voltage control system and a tractive system operating at up to 478.8 V.
+The design combines circuitry that was previously distributed across multiple assemblies, including precharge and AIR control, active discharge, HV-present and AIR-weld detection, TSMP circuitry, and the drivers for the vehicle's HV indicator and ready-to-move lights. It is installed inside the accumulator as part of a three-PCB stack with the BMS and integration electronics.
         </p>
 
         <h3>Main functions</h3>
@@ -93,18 +93,17 @@ x
         <h2>Design requirements</h2>
 
         <p>
-            Explain the main constraints that drove the design. This can include
-            Formula SAE rules, pack voltage, precharge/discharge timing,
-            isolation, packaging, serviceability, or anything else that
-            actually affected your decisions. 
+            The board was designed around a 114s6p accumulator with a maximum tractive-system voltage of 478.8 V. Major constraints included meeting Formula SAE precharge and discharge timing requirements, maintaining separation between the high- and low-voltage domains, and packaging the control electronics within the accumulator.
+
+The precharge system must charge the inverter DC link to at least 90% of accumulator voltage within 5 seconds, while the discharge system must bring the tractive system below 60 V within 5 seconds after shutdown. The PCB uses a four-layer stackup with a 5 mm HV/LV keepout and is packaged as part of a three-board stack within the accumulator.
         </p>
 
         <ul>
             <li>Maximum pack voltage: 478.8 V</li>
             <li>Precharge requirement: to 90% in <5s</li>
             <li>Discharge requirement: to < 60 V in <5s</li>
-            <li>HV/LV isolation or spacing: [fill in]</li>
-            <li>Packaging constraints: [fill in]</li>
+            <li>4-layer PCB with 5 mm HV/LV separation</li>
+            <li>Packaged inside accumulator in a 3-PCB electronics stack</li>
         </ul>
 
     </section>
@@ -129,8 +128,11 @@ x
         <h2>Precharge</h2>
 
         <p>
-            Explain what the precharge circuit needs to do and how your
-            implementation works.
+            The precharge circuit limits inrush current while charging the inverter's 650 µF DC-link capacitance before the main AIRs close. The final design uses two 750 Ω, 100 W pulse-rated resistors in series, giving a total precharge resistance of 1.5 kΩ.
+
+At the maximum pack voltage of 478.8 V, the resulting RC time constant is 0.975 s, corresponding to approximately 2.25 s to reach 90% of pack voltage. Peak precharge current is approximately 319 mA, and the resistors initially dissipate approximately 153 W combined.
+
+The AIR and precharge relay drivers are controlled from the low-voltage system while switching the contactors used to connect the accumulator to the vehicle tractive system.
         </p>
 
         <figure class="content-image">
@@ -163,6 +165,13 @@ x
 
         <div class="calculation-box">
             Put equation / calculation / LTspice screenshot here
+            τ = RC = (1.5 kΩ)(650 µF) = 0.975 s
+
+t90 = −τ    ln(0.1) = 2.25 s
+
+Ipeak = 4   78.8 V / 1.5 kΩ = 319 mA
+
+Ecap = ½C   V² = 74.5 J    
         </div>
 
         <p>
@@ -180,7 +189,7 @@ x
         <h2>Discharge</h2>
 
         <p>
-            Explain the discharge requirement and your approach.
+            The discharge circuit actively discharges the vehicle-side DC link after the accumulator is disconnected, bringing the tractive system below 60 V within the required shutdown time. Rather than using a mechanical discharge relay, this revision uses a solid-state implementation with high-voltage MOSFET switching and two 15 kΩ, 100 W discharge resistors.
         </p>
 
         <figure class="content-image">
@@ -195,9 +204,11 @@ x
         <h3>Development and testing</h3>
 
         <p>
-            This is a good place to tell the actual development story:
-            what you originally designed, what happened when you tested it,
-            what you investigated, and what changed in the next revision.
+            An early prototype used a photovoltaic isolated gate driver to control the discharge MOSFET. Initial low-voltage testing behaved as expected, but testing at increasing DC-link voltage revealed significant heating even while the discharge circuit was commanded off.
+
+            Investigation showed that leakage current in the off state was becoming significant at higher voltage. This led to a redesign of the switching stage and the addition of gate-source biasing and protection components to provide a more defined off state and improve high-voltage behavior.
+
+            The experience also changed the validation approach for the circuit: functional switching at low voltage was not sufficient to characterize a design whose leakage mechanisms become important only as the applied voltage increases. The revised circuit is being validated incrementally before full-pack-voltage testing.
         </p>
 
         <div class="two-images">
@@ -239,8 +250,11 @@ x
         <h2>HV-present detection</h2>
 
         <p>
-            Explain how you determine whether tractive-system voltage is
-            present and what the resulting signal is used for.
+            The HV-present circuit determines whether the vehicle-side tractive system is above the 60 V threshold used to define the presence of high voltage. A high-resistance divider scales the tractive-system voltage to a low-voltage signal, which is compared against a reference using an LM393 comparator.
+
+            The resulting logic is used by the HV indicator and ready-to-move circuitry. Isolation between the high- and low-voltage domains allows the detection result to be used by the vehicle control electronics without directly connecting the two electrical domains.
+
+            The circuit was designed so the detection threshold is set by the resistor network rather than in software, allowing the safety indication to operate independently of the vehicle controller.
         </p>
 
         <figure class="content-image">
@@ -276,9 +290,9 @@ x
         <h2>AIR weld detection</h2>
 
         <p>
-            Explain what you're checking for, how the circuit works, and
-            how this version relates to the standalone circuit you built
-            previously.
+            The AIR weld-detection circuit checks whether either accumulator isolation relay has failed closed after the shutdown sequence. Isolated solid-state switches select the measurement condition, while a high-resistance network scales the monitored tractive-system voltage for comparison against a reference. The resulting state is transferred across the HV/LV isolation boundary and reported to the low-voltage control system.
+
+            This implementation is based on a standalone AIR weld-detection board developed and tested during the previous vehicle cycle. The circuit was redesigned and integrated into the HV Control Board to reduce external wiring and consolidate accumulator safety electronics.
         </p>
 
         <figure class="content-image">
@@ -334,10 +348,11 @@ x
         <h2>PCB layout</h2>
 
         <p>
-            Explain the layout decisions that actually matter: HV/LV
-            separation, layer stack, high-current or high-voltage routing,
-            placement of large power components, grounding, connectors,
-            and packaging constraints.
+            The board uses a four-layer stackup with signal routing on the outer layers and internal ground and power planes. High- and low-voltage circuitry are physically separated with a 5 mm keepout, including removal of low-voltage copper beneath high-voltage switching regions where necessary.
+
+            Component placement was organized around functional blocks to keep high-voltage paths short and maintain clear isolation boundaries. Large discharge and precharge components are placed to accommodate their thermal and mechanical requirements, while the connector locations are constrained by the surrounding accumulator electronics and three-board stackup.
+
+            Ground pours and via stitching are used throughout the low-voltage region to provide low-impedance return paths. High-voltage routing is kept separate from these planes rather than allowing the low-voltage ground plane to extend underneath the isolated circuitry.
         </p>
 
         <figure class="full-image">
