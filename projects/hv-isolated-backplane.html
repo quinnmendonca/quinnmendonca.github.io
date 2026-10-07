@@ -1,12 +1,16 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>HV Isolated Backplane PCB — Quinn Mendonca</title>
+
     <link rel="stylesheet" href="../style.css">
 </head>
+
 
 <body>
 
@@ -21,6 +25,7 @@
 
 
 <main class="project-page">
+
 
     <!-- TITLE -->
 
@@ -192,7 +197,7 @@
         </p>
 
         <p>
-            Each input first goes through a 4 A fuse. A 1N4007 is connected from
+            Each input first goes through a fuse. A 1N4007 is connected from
             the protected input to ground so that if the supply polarity is reversed,
             current is directed through the diode and the fuse opens instead of
             applying the reversed supply to the electronics.
@@ -212,7 +217,7 @@
                  alt="Backplane 12 volt power management schematic">
 
             <figcaption>
-                Ready-power and charge-power inputs with 4 A fuses,
+                Ready-power and charge-power inputs with fused protection,
                 reverse-polarity protection, and Schottky ORing onto the
                 common LV power rail.
             </figcaption>
@@ -311,8 +316,9 @@
         <p>
             That lets the backplane interconnect boards that contain 478.8 V
             circuitry without routing tractive-system voltage through the backplane
-            itself. The 5 mm HV/LV boundary stays on the board that actually needs
-            it instead of extending across the entire electronics stack.
+            itself. HV/LV separation is handled locally on the boards that contain
+            both voltage domains, while the shared backplane remains entirely
+            low-voltage.
         </p>
 
     </section>
@@ -369,6 +375,7 @@
     <p>Quinn Mendonca</p>
     <p><a href="../index.html">Back to projects</a></p>
 </footer>
+
 
 </body>
 

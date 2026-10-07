@@ -1,12 +1,16 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Point-Mass EV Lap Simulation — Quinn Mendonca</title>
+
     <link rel="stylesheet" href="../style.css">
 </head>
+
 
 <body>
 
@@ -21,6 +25,7 @@
 
 
 <main class="project-page">
+
 
     <!-- TITLE -->
 
@@ -75,18 +80,17 @@
         </p>
 
         <p>
-            I didn't want to compare those effects separately, so I coupled the
-            accumulator model directly to the vehicle simulation. At each step around
-            the track, the model calculates what the car is doing, determines the
-            requested motor power, converts that to an electrical load on the
-            accumulator, and then updates pack voltage, current, SOC, and battery
-            temperature.
+            I coupled the accumulator model directly to the vehicle simulation so
+            these effects are evaluated together. At each step around the track,
+            the model calculates what the car is doing, determines the requested
+            motor power, converts that to an electrical load on the accumulator,
+            and then updates pack voltage, current, SOC, and battery temperature.
         </p>
 
         <p>
-            That means battery limitations can feed back into vehicle performance
-            instead of the model assuming the car always has the same amount of
-            power available. I used the final model to compare candidate accumulator
+            Battery limitations can then feed back into vehicle performance rather
+            than the model assuming the car always has the same amount of power
+            available. I used the final model to compare candidate accumulator
             configurations and support our selection of a 114s6p pack for the
             2026–27 car.
         </p>
@@ -131,10 +135,10 @@
         </p>
 
         <p>
-            I solve braking zones backward from the required corner speed. Instead
-            of guessing where braking starts, the model works backward from the
-            corner to determine how much distance the car needs to slow down, then
-            combines that with the forward acceleration solution.
+            I solve braking zones backward from the required corner speed. The model
+            works backward from the corner to determine how much distance the car
+            needs to slow down, then combines that with the forward acceleration
+            solution.
         </p>
 
         <p>
@@ -168,16 +172,23 @@
 
         <p>
             I coupled the vehicle model directly to an electrical model of the
-            accumulator because I didn't want to assume that the car always has the
-            same power available. At every simulation step, the requested mechanical
-            power is converted into electrical power and pack current.
+            accumulator because available battery power changes throughout the run.
+            At every simulation step, the requested mechanical power is converted
+            into electrical power and pack current.
         </p>
 
         <p>
-            Cell discharge data gives me open-circuit voltage as a function of SOC,
-            and internal resistance is used to estimate voltage sag under load.
-            As energy is removed from the pack, I update SOC and cell voltage before
-            calculating the next step.
+            The accumulator model uses discharge data for the Molicel P30B cells
+            used in the pack. Cell discharge data gives me open-circuit voltage as
+            a function of SOC, and internal resistance is used to estimate voltage
+            sag under load.
+        </p>
+
+        <p>
+            I update SOC using coulomb counting from the simulated pack current,
+            while energy consumption is calculated separately from electrical power.
+            As charge is removed from the pack, I update SOC and cell voltage before
+            calculating the next simulation step.
         </p>
 
         <p>
@@ -211,17 +222,19 @@
         <h2>Model validation</h2>
 
         <p>
-            I compared the simulated accumulator SOC against BMS telemetry from the
-            actual car instead of only checking the model against its own outputs.
-            This gives me a direct way to see whether the combined vehicle and
-            electrical model is reproducing the energy usage we see on track.
+            I compared the simulated SOC against BMS telemetry from logged laps
+            on the car. I didn't have a complete continuous endurance dataset,
+            so the comparison covers approximately 150 seconds of logged driving.
+            I aligned the simulation's starting time and SOC with the telemetry
+            before comparing the two traces.
         </p>
 
         <p>
-            The simulated SOC follows the measured trend over the validation
-            interval. The remaining difference is also useful because it gives me
-            something concrete to look at when improving assumptions and parameters
-            in the model.
+            Over this interval, the SOC error had an RMSE of 0.395 percentage
+            points and a maximum absolute error of 0.767 percentage points.
+            The measured data gives me a reference for improving the model, while
+            I primarily use the simulation to compare accumulator configurations
+            against each other under the same modeled conditions.
         </p>
 
 
@@ -231,7 +244,9 @@
                  alt="Simulated battery state of charge compared with BMS telemetry">
 
             <figcaption>
-                Simulated accumulator SOC compared with measured BMS telemetry.
+                Simulated accumulator SOC compared with measured BMS telemetry over
+                approximately 150 seconds of logged driving. Simulation start time
+                and SOC are aligned to the telemetry.
             </figcaption>
 
         </figure>
@@ -277,10 +292,10 @@
         </p>
 
         <p>
-            Temperature also feeds back into the electrical model instead of only
-            being an output. I use the simulated battery temperature in the
-            temperature-dependent SOC calculations, so changing thermal conditions
-            can affect the estimated usable capacity as endurance progresses.
+            Temperature also feeds back into the electrical model. I use the
+            simulated battery temperature in the temperature-dependent SOC
+            calculations, so changing thermal conditions can affect the estimated
+            usable capacity as endurance progresses.
         </p>
 
         <p>
@@ -340,8 +355,10 @@
 
         <p>
             This is one of the main reasons I built the model. We needed to choose
-            the series and parallel cell count for the 2026–27 accumulator, and I
-            didn't want to make that decision from nominal energy capacity alone.
+            the series and parallel cell count for the 2026–27 accumulator, so I
+            used the simulation to compare candidate configurations under the same
+            modeled endurance conditions. The goal was primarily to rank the
+            configurations rather than predict an exact race result.
         </p>
 
         <p>
@@ -358,6 +375,15 @@
             five to seven cells in parallel. For each one, I tracked energy
             consumption, final SOC, remaining usable energy, thermal behavior, and
             simulated lap time.
+        </p>
+
+        <p>
+            I limited the upper end of the series-count sweep using the inverter's
+            allowable DC-bus voltage and the Formula SAE 80 kW tractive-system power
+            limit. Increasing pack voltage can improve the power available at some
+            motor operating points, but only until the car reaches the competition
+            power limit. I therefore used 114s as the highest configuration worth
+            evaluating within the electrical limits of the powertrain.
         </p>
 
 
@@ -401,17 +427,18 @@
         <h3>Series-cell selection</h3>
 
         <p>
-            After settling on 6p, I compared 108s, 110s, 112s, and 114s. Increasing
-            series count raises the pack voltage and usable energy, but because the
-            accumulator is coupled to the motor and vehicle models, I could also see
-            how that change affected performance instead of looking at voltage by
-            itself.
+            After settling on 6p, I compared 108s, 110s, 112s, and 114s.
+            Increasing series count raises pack voltage and usable energy while
+            reducing the current required for a given electrical power. The
+            vehicle model also captures how pack voltage interacts with the
+            inverter and motor, so I could see whether the additional voltage
+            actually translated into more usable performance.
         </p>
 
         <p>
             Of the 6p configurations I evaluated, 114s6p gave the fastest simulated
-            lap time and the largest remaining usable SOC. The model predicted a
-            70.777 s lap and about 24% remaining usable SOC after the endurance
+            lap time and the largest remaining usable SOC. The model predicted about
+            a 70.8 s lap and about 24% remaining usable SOC after the endurance
             simulation.
         </p>
 
@@ -445,84 +472,87 @@
         <h2>Selected configuration</h2>
 
         <p>
-            For the selected 114s6p pack, I ran the complete endurance simulation
-            starting at 95% SOC. The vehicle and accumulator states are updated
-            continuously throughout the event rather than repeating one fixed lap
-            at a constant battery condition.
-        </p>
-
-        <p>
-            In this run, the model used approximately 5.53 kWh and finished at
-            26.6% SOC. With the pack constrained to a 5–95% operating range, that
-            leaves about 24% of usable SOC at the end of endurance. The simulated
-            lap time was 70.777 seconds.
+            A representative simulated endurance run for the selected 114s6p
+            accumulator starts at 95% SOC and ends at approximately 26.6% SOC.
+            The model uses approximately 5.53 kWh over the event, leaving about
+            24% of the usable 5–95% SOC range remaining.
         </p>
 
 
         <div class="calculation-box">
 
-            Pack configuration: 114s6p<br><br>
+            Configuration = 114s6p<br><br>
 
-            Cell count: 684<br><br>
+            Cell count = 684<br><br>
 
-            Maximum pack voltage: 478.8 V<br><br>
+            Maximum pack voltage = 478.8 V<br><br>
 
-            Nominal energy: ≈ 7.35 kWh<br><br>
+            Nominal energy ≈ 7.35 kWh<br><br>
 
-            Usable energy (5–95% SOC): ≈ 6.62 kWh<br><br>
+            Usable energy ≈ 6.62 kWh<br><br>
 
-            Starting SOC: 95%<br><br>
+            Starting SOC = 95%<br><br>
 
-            Simulated energy used: ≈ 5.53 kWh<br><br>
+            Final SOC ≈ 26.6%<br><br>
 
-            Final SOC: ≈ 26.6%<br><br>
+            Energy used ≈ 5.53 kWh<br><br>
 
-            Remaining usable SOC: ≈ 24.0%<br><br>
+            Remaining usable SOC ≈ 24%<br><br>
 
-            Simulated lap time: 70.777 s
+            Simulated lap time = 70.777 s
 
         </div>
+
+
+        <p>
+            SOC and energy consumption are calculated separately in the model.
+            SOC is updated by coulomb counting from pack current, while energy
+            consumption accounts for pack voltage throughout the run. Because
+            cell voltage changes with SOC and operating conditions, the SOC
+            decrease is not expected to equal the same fraction of the pack's
+            nominal energy.
+        </p>
 
     </section>
 
 
-    <!-- DEVELOPMENT -->
+    <!-- MODEL DEVELOPMENT -->
 
     <section class="project-section">
 
         <h2>Model development</h2>
 
         <p>
-            I didn't build all of this at once. The earlier versions were mostly
-            focused on generating a vehicle speed profile and estimating energy
-            demand. As I got more vehicle, motor, cell, and telemetry data, I added
-            the electrical limits, SOC model, battery temperature, cooling behavior,
-            and feedback between the accumulator and vehicle model.
+            I didn't build all of this at once. The first versions were mainly
+            focused on generating a reasonable speed profile and estimating energy
+            demand around a lap. I gradually added electrical limits, SOC tracking,
+            battery temperature, cooling loads, and the feedback between accumulator
+            capability and available motor torque.
         </p>
 
         <p>
-            I'm also using measured vehicle data to keep improving it. The goal
-            isn't just to make a lap-time predictor; I want the model to be useful
-            for actual vehicle-level decisions like accumulator sizing and
-            powertrain limits.
+            Comparing the simulation against measured vehicle data also gave me a
+            way to find where the assumptions need improvement. The goal is for the
+            model to be useful for actual design decisions, especially accumulator
+            sizing and powertrain tradeoffs, rather than only producing a lap-time
+            prediction.
         </p>
 
     </section>
 
 
-    <!-- LAST UPDATED -->
-
-    <div class="project-updated">
+    <p class="last-updated">
         Last updated October 2026
-    </div>
+    </p>
+
 
 </main>
 
 
 <footer>
-    <p>Quinn Mendonca</p>
-    <p><a href="../index.html">Back to projects</a></p>
+    <p>Quinn Mendonca · 2026</p>
 </footer>
+
 
 </body>
 
