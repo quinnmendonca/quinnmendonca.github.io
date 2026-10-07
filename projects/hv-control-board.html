@@ -298,21 +298,15 @@
         </figure>
 
 
-        <h3>Development and testing</h3>
+        <h3>Validation</h3>
 
         <p>
-            The discharge circuit went through several revisions during development.
-            An earlier solid-state implementation switched correctly during
-            low-voltage bench testing, but increasing the test voltage revealed
-            excessive off-state leakage and heating.
-        </p>
-
-        <p>
-            That changed how I test the circuit. Instead of only checking whether
-            the switch turns on and off, I also measure off-state current and
-            gate-source voltage as the bus voltage is increased. The optional gate
-            resistance, capacitance, and clamping footprints on this revision give
-            me places to adjust the gate network during testing if needed.
+            High-voltage validation of this revision is in progress. 
+            An earlier solid-state discharge circuit switched correctly 
+            at low voltage but leaked and heated up as I raised the bus
+            voltage. Because of that, I now measure off-state current 
+            and gate-source voltage at each voltage step instead of only
+            checking that the switch turns on and off.
         </p>
 
     </section>
