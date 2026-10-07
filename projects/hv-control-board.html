@@ -516,11 +516,621 @@
         </p>
 
         <p>
-            High-voltage functions are grouped around the HV region of the
-            board, while relay drivers, debug circuitry, and control interfaces
-            remain on the low-voltage side. Circuits that communicate across
-            the HV/LV boundary do so through their intended isolation
-            components.
+            <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HV Control Board (Ultimate HV Board) — Quinn Mendonca</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<nav>
+    <a class="site-name" href="../index.html">Quinn Mendonca</a>
+
+    <div class="nav-links">
+        <a href="../index.html#projects">Projects</a>
+        <a href="../index.html#about">About</a>
+    </div>
+</nav>
+
+
+<main class="project-page">
+
+    <!-- TITLE -->
+
+    <header class="project-intro">
+
+        <a class="back-link" href="../index.html">← Projects</a>
+
+        <h1>HV Control Board (Ultimate HV Board)</h1>
+
+        <p class="project-subtitle">
+            2026–27 Formula SAE EV · Validation in progress
+        </p>
+
+        <p class="project-lead">
+            HV control and safety board for precharge, solid-state discharge,
+            accumulator isolation relay (AIR) control, HV-present detection,
+            AIR weld detection, tractive-system measurement points (TSMPs),
+            and vehicle safety-light logic. The board sits inside the accumulator
+            in a section separated from the battery cells as part of a three-PCB
+            electronics stack.
+        </p>
+
+    </header>
+
+
+    <!-- MAIN BOARD IMAGE -->
+
+    <figure class="full-image">
+
+        <img src="../images/hv-control-board/hv-control-board.png"
+             alt="HV Control Board PCB render">
+
+        <figcaption>
+            2026–27 HV Control Board, test revision.
+        </figcaption>
+
+    </figure>
+
+
+    <!-- OVERVIEW -->
+
+    <section class="project-section">
+
+        <h2>Overview</h2>
+
+        <p>
+            The HV Control Board consolidates the primary high-voltage control,
+            monitoring, and safety circuitry for Bruin Formula Racing's 2026–27
+            Formula SAE EV accumulator. It interfaces the low-voltage BMS and
+            shutdown system with a tractive system operating at up to 478.8 V.
+        </p>
+
+        <p>
+            The board controls the positive and negative accumulator isolation
+            relays and precharge relay, provides active discharge of the
+            vehicle-side DC link, detects HV presence and welded AIRs, and
+            contains the tractive-system measurement-point circuitry. It also
+            provides the logic and drivers for the vehicle's HV indicator and
+            ready-to-move safety lights.
+        </p>
+
+        <p>
+            The board sits inside the accumulator as part of a three-PCB
+            electronics stack with the BMS Parent and Integration Board.
+            Consolidating these functions inside the accumulator reduces
+            external HV electronics and simplifies wiring between the
+            accumulator, service section, and vehicle.
+        </p>
+
+        <h3>Main functions</h3>
+
+        <ul>
+            <li>Precharge control</li>
+            <li>Solid-state active discharge</li>
+            <li>HV-present detection</li>
+            <li>AIR weld detection</li>
+            <li>AIR and precharge relay control</li>
+            <li>Tractive-system measurement-point circuitry</li>
+            <li>HV indicator-light control</li>
+            <li>Ready-to-move (RTM) light control</li>
+        </ul>
+
+        <figure class="content-image">
+            <img src="../images/hv-control-board/block-diagram.png"
+                 alt="HV system block diagram">
+
+            <figcaption>
+                Accumulator and vehicle HV system architecture.
+            </figcaption>
+        </figure>
+
+    </section>
+
+
+    <!-- REQUIREMENTS -->
+
+    <section class="project-section">
+
+        <h2>Design requirements</h2>
+
+        <p>
+            The board was designed around a 114s6p accumulator with a maximum
+            tractive-system voltage of 478.8 V. Major constraints included
+            meeting Formula SAE precharge and discharge timing requirements,
+            maintaining separation between the high- and low-voltage domains,
+            and packaging the control electronics within the accumulator.
+        </p>
+
+        <p>
+            The precharge system must charge the inverter DC link to at least
+            90% of accumulator voltage within 5 seconds, while the discharge
+            system must bring the tractive system below 60 V within 5 seconds
+            after shutdown. The PCB uses a four-layer stackup with a 5 mm HV/LV
+            separation and is packaged as part of a three-board electronics
+            stack within the accumulator.
+        </p>
+
+        <ul>
+            <li>Maximum pack voltage: 478.8 V</li>
+            <li>Precharge: ≥90% of accumulator voltage within 5 s</li>
+            <li>Discharge: &lt;60 V within 5 s</li>
+            <li>Four-layer PCB with 5 mm HV/LV separation</li>
+            <li>Packaged inside the accumulator in a three-PCB electronics stack</li>
+        </ul>
+
+    </section>
+
+
+    <!-- TOP LEVEL -->
+
+    <figure class="content-image">
+
+        <img src="../images/hv-control-board/top-level.png"
+             alt="HV Control Board top-level schematic">
+
+        <figcaption>
+            Top-level schematic showing the HV/LV boundary and major functional blocks.
+        </figcaption>
+
+    </figure>
+
+
+    <!-- PRECHARGE -->
+
+    <section class="project-section">
+
+        <h2>Precharge</h2>
+
+        <p>
+            The precharge circuit limits inrush current while charging the
+            inverter's 650 µF DC-link capacitance before the main accumulator
+            isolation relays fully connect the pack to the vehicle. A 2.2 kΩ
+            resistor is placed in series with the precharge path and bypassed
+            once precharge is complete.
+        </p>
+
+        <p>
+            The precharge relay is controlled by the BMS through an NMOS
+            low-side driver. A gate resistor and pull-down provide defined
+            switching behavior, while a TVS diode across the relay coil
+            suppresses the inductive transient generated when the relay is
+            switched off. A separate LED driver provides a visual indication
+            of the commanded precharge state during debugging.
+        </p>
+
+        <figure class="content-image">
+
+            <img src="../images/hv-control-board/precharge.png"
+                 alt="Precharge relay and driver schematic">
+
+            <figcaption>
+                Precharge resistor, relay, low-side driver, and debug LED circuitry.
+            </figcaption>
+
+        </figure>
+
+
+        <figure class="content-image">
+
+            <img src="../images/hv-control-board/AIR-driver.png"
+                 alt="Negative AIR driver schematic">
+
+            <figcaption>
+                Negative AIR low-side relay driver and debug LED circuitry.
+            </figcaption>
+
+        </figure>
+
+
+        <h3>Component sizing</h3>
+
+        <p>
+            With a 650 µF inverter DC-link capacitance and a maximum pack
+            voltage of 478.8 V, the 2.2 kΩ precharge resistance gives a
+            theoretical 90% charge time of approximately 3.29 s, within the
+            5 s requirement.
+        </p>
+
+        <div class="calculation-box">
+            τ = RC = (2.2 kΩ)(650 µF) = 1.43 s<br><br>
+
+            t<sub>90</sub> = −τ ln(0.1) = 3.29 s<br><br>
+
+            I<sub>peak</sub> = 478.8 V / 2.2 kΩ = 218 mA<br><br>
+
+            P<sub>peak</sub> = (478.8 V)² / 2.2 kΩ = 104 W<br><br>
+
+            E<sub>cap</sub> = ½CV² = 74.5 J
+        </div>
+
+        <p>
+            The resistor therefore sees a relatively low current but a
+            short-duration high-power pulse during each precharge event.
+            Resistance and pulse-energy capability were selected together
+            rather than sizing the component from steady-state power alone.
+        </p>
+
+    </section>
+
+
+    <!-- DISCHARGE -->
+
+    <section class="project-section">
+
+        <h2>Discharge</h2>
+
+        <p>
+            The active discharge circuit removes energy stored on the
+            vehicle-side DC link after the accumulator is disconnected. A
+            2.7 kΩ discharge resistor is switched across the HV bus using a
+            pair of back-to-back 1000 V depletion-mode NMOSs.
+        </p>
+
+        <p>
+            The MOSFET gates are driven by an FDA217 photovoltaic isolator,
+            providing galvanic isolation between the low-voltage shutdown
+            circuitry and the tractive system. The two MOSFETs are connected
+            back-to-back so their body diodes oppose one another, blocking
+            current through the MOSFET pair in the off state. Additional
+            gate-source resistor, capacitor, and clamp-diode footprints are
+            included for tuning and protection during validation.
+        </p>
+
+        <p>
+            The depletion-mode devices are normally conducting at zero
+            gate-source voltage. During normal vehicle operation, the isolated
+            driver biases the MOSFETs off. Loss of the control bias returns
+            the devices toward their normally-on state, providing a passive
+            path toward activating discharge.
+        </p>
+
+        <figure class="content-image">
+
+            <img src="../images/hv-control-board/discharge.png"
+                 alt="Solid-state discharge schematic">
+
+            <figcaption>
+                Solid-state discharge circuit using an isolated photovoltaic
+                driver and back-to-back depletion-mode NMOSs.
+            </figcaption>
+
+        </figure>
+
+
+        <h3>Development and testing</h3>
+
+        <p>
+            The discharge topology went through several revisions during
+            development. An earlier solid-state implementation switched
+            correctly during low-voltage bench testing, but testing at
+            increasing voltage revealed excessive off-state leakage and
+            heating.
+        </p>
+
+        <p>
+            This prompted further investigation into MOSFET off-state behavior
+            and gate biasing rather than relying only on functional switching
+            tests at reduced voltage. The current revision uses back-to-back
+            depletion-mode MOSFETs and includes footprints for additional
+            gate-source resistance, capacitance, and voltage clamping so the
+            switching behavior can be adjusted during validation.
+        </p>
+
+        <p>
+            The earlier failure also changed the validation approach for the
+            circuit: correct low-voltage switching alone is not sufficient to
+            characterize a circuit whose leakage and device behavior become
+            increasingly important at several hundred volts.
+        </p>
+
+        <div class="two-images">
+
+            <figure>
+                <div class="project-placeholder small">
+                    PROTOTYPE / BENCH PHOTO
+                </div>
+
+                <figcaption>
+                    Discharge prototype testing.
+                </figcaption>
+            </figure>
+
+            <figure>
+                <div class="project-placeholder small">
+                    SCOPE / TEST RESULT
+                </div>
+
+                <figcaption>
+                    Discharge validation measurement.
+                </figcaption>
+            </figure>
+
+        </div>
+
+    </section>
+
+
+    <!-- HV PRESENT -->
+
+    <section class="project-section">
+
+        <h2>HV-present detection</h2>
+
+        <p>
+            The HV-present circuit provides a hardware indication of whether
+            the tractive system is above the 60 V threshold. A high-impedance
+            resistor divider scales the HV bus voltage to a low-voltage signal,
+            which is compared against a fixed reference using an LM393
+            comparator.
+        </p>
+
+        <p>
+            Five series 1 MΩ resistors are used on the high side of the divider
+            to distribute voltage across multiple components. The comparator
+            changes state at approximately 55.7 V, providing margin around the
+            60 V threshold. Its output drives a PMOS stage, and the resulting
+            HV-present state is transferred across the HV/LV isolation boundary
+            through an optocoupler.
+        </p>
+
+        <p>
+            The resulting hardware signal is used by the vehicle's HV indicator
+            and ready-to-move circuitry. Setting the threshold in hardware keeps
+            the safety indication independent of a software voltage measurement.
+        </p>
+
+        <figure class="content-image">
+
+            <img src="../images/hv-control-board/HV-present.png"
+                 alt="HV-present detection schematic">
+
+            <figcaption>
+                HV-present divider, comparator, output driver, and isolation stage.
+            </figcaption>
+
+        </figure>
+
+
+        <h3>Ready-to-move light</h3>
+
+        <p>
+            The ready-to-move (RTM) light is driven by a hardware oscillator
+            rather than relying on software to generate the flashing signal.
+            A 555 timer configured as an astable oscillator produces an
+            approximately 2.7 Hz, 50% duty-cycle output when the RTM signal
+            is enabled.
+        </p>
+
+        <p>
+            The timer output drives an NMOS/PMOS stage that switches the
+            external 12 V RTM light. Implementing the flashing function in
+            hardware provides predictable light behavior without requiring
+            the BMS to continuously generate the flashing waveform.
+        </p>
+
+        <figure class="content-image">
+
+            <img src="../images/hv-control-board/RTM-LV.png"
+                 alt="Ready-to-move light driver schematic">
+
+            <figcaption>
+                Hardware RTM oscillator and 12 V light-driver circuitry.
+            </figcaption>
+
+        </figure>
+
+    </section>
+
+
+    <!-- AIR WELD DETECTION -->
+
+    <section class="project-section">
+
+        <h2>AIR weld detection</h2>
+
+        <p>
+            The AIR weld-detection circuit determines whether an accumulator
+            isolation relay has remained closed after it has been commanded
+            open. Two isolated solid-state switches configure the measurement
+            path so the voltage associated with an AIR can be checked while
+            maintaining isolation from the low-voltage control system.
+        </p>
+
+        <p>
+            When enabled, a 1 MΩ / 6.8 kΩ divider scales the measured voltage
+            for an LM393 comparator referenced to approximately 1.6 V. The
+            comparator output is inverted by a PMOS stage and transferred to
+            the low-voltage system through an optocoupler, providing an
+            isolated digital weld-status signal to the BMS.
+        </p>
+
+        <p>
+            The isolated switches also allow the measurement network to be
+            disconnected when it is not required, preventing unwanted voltage
+            across the sensing network in other operating states.
+        </p>
+
+        <figure class="content-image">
+
+            <img src="../images/hv-control-board/AIR-weld-checker.png"
+                 alt="AIR weld-detection schematic">
+
+            <figcaption>
+                Isolated AIR weld-detection measurement and output circuitry.
+            </figcaption>
+
+        </figure>
+
+
+        <h3>Previous-revision testing</h3>
+
+        <p>
+            The weld-detection architecture was originally developed as a
+            standalone board during the previous vehicle cycle before being
+            integrated into the current HV Control Board.
+        </p>
+
+        <p>
+            During testing of the previous revision, the low-voltage output
+            exhibited a transient that could momentarily exceed the allowable
+            GPIO voltage. A 3.3 V clamp was added at the isolated output to
+            protect the BMS input. The current integrated design retains this
+            protection while consolidating the circuit onto the main board.
+        </p>
+
+        <p>
+            Testing the previous standalone board also allowed the divider,
+            comparator threshold, isolation stage, and output logic to be
+            evaluated independently before integrating the function into the
+            larger accumulator electronics system.
+        </p>
+
+        <div class="two-images">
+
+            <figure>
+                <div class="project-placeholder small">
+                    OLD BOARD / TEST SETUP
+                </div>
+
+                <figcaption>
+                    Previous-revision AIR weld-detection test setup.
+                </figcaption>
+            </figure>
+
+            <figure>
+                <div class="project-placeholder small">
+                    TEST RESULT
+                </div>
+
+                <figcaption>
+                    Previous-revision validation.
+                </figcaption>
+            </figure>
+
+        </div>
+
+    </section>
+
+
+    <!-- PCB -->
+
+    <section class="project-section">
+
+        <h2>PCB layout</h2>
+
+        <p>
+            The board is a four-layer design containing both low-voltage
+            control electronics and circuitry connected to the 478.8 V
+            tractive system. The layout therefore uses physical separation
+            between the HV and LV regions, with a 5 mm keepout across the
+            isolation boundary and no low-voltage ground plane extending
+            beneath isolated high-voltage circuitry.
+        </p>
+
+        <p>
+            Ground pours and via stiching throughout the low-voltage region 
+            provide short return paths and tie the ground planes together. 
+            High-voltage functions are kept physically separated from these 
+            low-voltage ground pours, and circuits that cross the HV/LV boundary
+            do so only through their intended isolation components.
+        </p>
+
+        <p>
+            The large precharge, discharge, and TSMP resistors use dedicated
+            heatsink mounting provisions. Connector placement and board
+            dimensions are constrained by the surrounding accumulator
+            enclosure and the three-PCB electronics stack.
+        </p>
+
+        <figure class="full-image">
+
+            <div class="project-placeholder board-layout">
+                PCB LAYOUT / COPPER VIEW
+            </div>
+
+            <figcaption>
+                PCB layout and HV/LV isolation boundary.
+            </figcaption>
+
+        </figure>
+
+    </section>
+
+
+    <!-- TESTING -->
+
+    <section class="project-section">
+
+        <h2>Testing</h2>
+
+        <p>
+            The current revision is undergoing board bring-up and subsystem
+            validation. Testing is performed at the circuit level before
+            progressing to integrated operation, beginning with low-voltage
+            power and logic checks before applying increasing voltage to
+            circuits connected to the tractive system.
+        </p>
+
+        <p>
+            Test points are included throughout the design for relay commands,
+            comparator outputs, sensing nodes, and safety-light logic so
+            intermediate states can be measured during bring-up. Debug LEDs
+            provide additional indication of commanded relay states, HV
+            presence, and RTM operation.
+        </p>
+
+        <p>
+            High-voltage circuits are validated incrementally rather than
+            immediately applying full pack voltage. This is particularly
+            important for the discharge and sensing circuits, where leakage,
+            device voltage stress, and isolation behavior may not be apparent
+            during low-voltage functional testing.
+        </p>
+
+        <figure class="content-image">
+
+            <div class="project-placeholder photo">
+                BENCH / BRING-UP PHOTO
+            </div>
+
+            <figcaption>
+                Board bring-up and validation.
+            </figcaption>
+
+        </figure>
+
+        <h3>Current status</h3>
+
+        <p>
+            Full-board and accumulator-level validation is currently in progress.
+        </p>
+
+    </section>
+
+
+    <!-- LAST UPDATED -->
+
+    <div class="project-updated">
+        Last updated October 2026
+    </div>
+
+</main>
+
+
+<footer>
+    <p>Quinn Mendonca</p>
+    <p><a href="../index.html">Back to projects</a></p>
+</footer>
+
+</body>
+
+</html>
         </p>
 
         <p>
