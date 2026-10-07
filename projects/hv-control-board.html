@@ -35,12 +35,12 @@
         </p>
 
         <p class="project-lead">
-            HV control and safety board for precharge, solid-state discharge,
-            accumulator isolation relay (AIR) control, HV-present detection,
-            AIR weld detection, tractive-system measurement points (TSMPs),
-            and vehicle safety-light logic. The board sits inside the accumulator
-            in a section separated from the battery cells as part of a three-PCB
-            electronics stack.
+            I designed this board to handle the accumulator's high-voltage control
+            and safety functions at up to 478.8 V: precharge, solid-state discharge,
+            AIR control, HV-present and AIR weld detection, the TSMPs, and the HV
+            indicator and ready-to-move lights. It sits inside the accumulator in a
+            section separated from the cells, as one of three boards in the electronics
+            stack with the BMS Parent and HV Isolated Backplane.
         </p>
 
     </header>
@@ -54,7 +54,7 @@
              alt="HV Control Board PCB render">
 
         <figcaption>
-            2026–27 HV Control Board, test revision.
+            Test revision of the 2026–27 HV Control Board.
         </figcaption>
 
     </figure>
@@ -67,26 +67,24 @@
         <h2>Overview</h2>
 
         <p>
-            The HV Control Board consolidates the primary high-voltage control,
-            monitoring, and safety circuitry for Bruin Formula Racing's 2026–27
-            Formula SAE EV accumulator. It interfaces the low-voltage BMS and
-            shutdown system with a tractive system operating at up to 478.8 V.
+            The HV Control Board interfaces the low-voltage BMS and shutdown system
+            with circuitry connected to the tractive system. Instead of putting
+            separate HV control boards around the vehicle, I consolidated the main
+            accumulator control, monitoring, and safety circuits onto one board inside
+            the pack.
         </p>
 
         <p>
-            The board controls the positive and negative accumulator isolation
-            relays and precharge relay, provides active discharge of the
-            vehicle-side DC link, detects HV presence and welded AIRs, and
-            contains the tractive-system measurement-point circuitry. It also
-            provides the logic and drivers for the vehicle's HV indicator and
-            ready-to-move safety lights.
+            The board controls the positive and negative accumulator isolation relays
+            and the precharge relay, actively discharges the vehicle-side DC link,
+            checks whether HV is present, detects welded AIRs, and contains the
+            tractive-system measurement-point circuitry. It also handles the logic
+            and drivers for the HV indicator and ready-to-move lights.
         </p>
 
         <p>
-            The board sits inside the accumulator as part of a three-PCB
-            electronics stack with the BMS Parent and HV Isolated Backplane.
-            Consolidating these functions inside the accumulator reduces
-            external HV electronics and simplifies wiring between the
+            Keeping these functions inside the accumulator reduces the amount of HV
+            electronics outside the pack and simplifies the wiring between the
             accumulator, service section, and vehicle.
         </p>
 
@@ -126,18 +124,18 @@
         <h2>Design requirements</h2>
 
         <p>
-            The board was designed around a 114s6p accumulator with a maximum
-            tractive-system voltage of 478.8 V. Major constraints included
-            meeting Formula SAE precharge and discharge timing requirements,
-            maintaining separation between the high- and low-voltage domains,
-            and packaging the control electronics within the accumulator.
+            The board was designed around our 114s6p accumulator, with a maximum
+            tractive-system voltage of 478.8 V. The main constraints were meeting
+            Formula SAE precharge and discharge timing requirements, keeping the
+            high- and low-voltage domains separated, and fitting the electronics
+            inside the accumulator.
         </p>
 
         <p>
-            The precharge system must charge the inverter DC link to at least
-            90% of accumulator voltage within 5 seconds, while the discharge
-            system must bring the tractive system below 60 V within 5 seconds
-            after shutdown.
+            The precharge system has to charge the inverter DC link to at least
+            90% of accumulator voltage within 5 seconds. After shutdown, the
+            discharge circuit has to bring the tractive system below 60 V within
+            5 seconds.
         </p>
 
         <ul>
@@ -159,8 +157,7 @@
              alt="HV Control Board top-level schematic">
 
         <figcaption>
-            Top-level schematic showing the HV/LV boundary and major
-            functional blocks.
+            Top-level schematic showing the HV/LV boundary and major functional blocks.
         </figcaption>
 
     </figure>
@@ -173,20 +170,19 @@
         <h2>Precharge</h2>
 
         <p>
-            The precharge circuit limits inrush current while charging the
-            inverter's 650 µF DC-link capacitance before the main accumulator
-            isolation relays fully connect the pack to the vehicle. A 2.2 kΩ
-            resistor is placed in series with the precharge path and bypassed
-            once precharge is complete.
+            Before the main AIRs close, the inverter's 650 µF DC link has to be
+            charged without a huge inrush current. A 2.2 kΩ resistor sits in series
+            with the precharge relay and limits the charging current. Once precharge
+            is complete and the main AIR closes, the resistor and precharge relay
+            are bypassed.
         </p>
 
         <p>
-            The precharge relay is controlled by the BMS through an NMOS
-            low-side driver. A gate resistor and pull-down provide defined
-            switching behavior, while a TVS diode across the relay coil
-            suppresses the inductive transient generated when the relay is
-            switched off. A separate LED driver provides a visual indication
-            of the commanded precharge state during debugging.
+            The BMS drives the precharge relay through a low-side NMOS with a gate
+            resistor and a pull-down so the gate never floats. A TVS across the coil
+            clamps the flyback when the relay turns off. Every relay driver on the
+            board also has a debug LED so I can see the commanded state without
+            connecting a meter.
         </p>
 
 
@@ -196,7 +192,7 @@
                  alt="Precharge relay and driver schematic">
 
             <figcaption>
-                Precharge resistor, relay, low-side driver, and debug LED circuitry.
+                Precharge resistor, relay, low-side driver, and debug LED.
             </figcaption>
 
         </figure>
@@ -208,7 +204,7 @@
                  alt="Negative AIR driver schematic">
 
             <figcaption>
-                Negative AIR low-side relay driver and debug LED circuitry.
+                Negative AIR driver. The positive AIR driver uses the same circuit.
             </figcaption>
 
         </figure>
@@ -217,11 +213,11 @@
         <h3>Component sizing</h3>
 
         <p>
-            With a 650 µF inverter DC-link capacitance and a maximum pack
-            voltage of 478.8 V, the 2.2 kΩ precharge resistor gives a
-            theoretical 90% charge time of approximately 3.29 s, within the
-            5 s requirement. Resistor pulse-energy capability and thermal
-            requirements were also evaluated for the 74.5 J precharge event.
+            With a 650 µF inverter DC-link capacitance and a maximum pack voltage
+            of 478.8 V, the 2.2 kΩ resistor gets the DC link to 90% of pack voltage
+            in approximately 3.29 s, which fits within the 5 s requirement. It sees
+            104.2 W at the start of precharge and absorbs 74.5 J over the event. I
+            also checked the resistor against its pulse-energy rating.
         </p>
 
     </section>
@@ -234,26 +230,26 @@
         <h2>Discharge</h2>
 
         <p>
-            The active discharge circuit removes energy stored on the
-            vehicle-side DC link after the accumulator is disconnected.
-            A 2.7 kΩ discharge resistor is switched across the HV bus using
-            a pair of back-to-back 1000 V depletion-mode NMOSs.
+            After shutdown, a 2.7 kΩ resistor is switched across the HV bus to drain
+            the energy stored on the inverter DC link. The solid-state switch uses
+            two 1000 V depletion-mode NMOSs connected source-to-source and driven
+            by an FDA217 photovoltaic isolator.
         </p>
 
         <p>
-            The MOSFET gates are driven by an FDA217 photovoltaic isolator,
-            providing galvanic isolation between the low-voltage shutdown
-            circuitry and the tractive system. The two MOSFETs are connected
-            back-to-back so their body diodes oppose one another, reducing
-            off-state current through the discharge path.
+            I chose depletion-mode MOSFETs because they conduct at zero gate-source
+            voltage. If the 12 V shutdown supply is lost, the MOSFETs return to
+            their conducting state and the discharge path turns on by default.
+            During normal operation, the FDA217 generates a negative gate-source
+            voltage to hold the MOSFETs off while maintaining galvanic isolation
+            between the low-voltage shutdown system and the tractive system.
         </p>
 
         <p>
-            Because the depletion-mode devices are normally conducting at
-            zero gate-source voltage, the discharge path defaults toward its
-            conducting state without gate bias. During normal vehicle
-            operation, the isolated driver applies negative gate-source
-            voltage to turn the devices off.
+            The FDA217 input is driven at approximately 5 mA. I also included
+            optional footprints for gate-source resistance, capacitance, and
+            clamping so I can adjust the gate network during testing without
+            another board revision.
         </p>
 
 
@@ -263,8 +259,8 @@
                  alt="Solid-state discharge schematic">
 
             <figcaption>
-                Solid-state discharge circuit using an isolated photovoltaic
-                driver and back-to-back depletion-mode NMOSs.
+                Solid-state discharge circuit using an FDA217 photovoltaic isolator
+                and depletion-mode NMOSs.
             </figcaption>
 
         </figure>
@@ -273,19 +269,17 @@
         <h3>Switching simulation</h3>
 
         <p>
-            I used LTspice to verify the switching behavior of the isolated
-            discharge stage at the maximum 478.8 V accumulator voltage. R2
-            in the simulation is the 2.7 kΩ discharge resistor connected in
-            series with the back-to-back depletion-mode NMOS switch.
+            I used LTspice to check the switching behavior at the maximum 478.8 V
+            accumulator voltage. The 2.7 kΩ resistor in the simulation represents
+            the actual discharge resistor in series with the solid-state switch.
         </p>
 
         <p>
             With zero gate-source bias, the normally-on depletion-mode MOSFETs
-            conduct and approximately 177 mA flows through the discharge
-            resistor. When the FDA217 photovoltaic isolator applies
-            approximately −12.5 V between each gate and the common source,
-            the devices turn off and the discharge current falls to
-            approximately zero.
+            conduct and approximately 177 mA flows through the discharge resistor.
+            When the FDA217 applies approximately −12.5 V between each gate and
+            its source, the MOSFETs turn off and the simulated discharge current
+            falls to zero.
         </p>
 
 
@@ -295,12 +289,9 @@
                  alt="LTspice simulation of depletion-mode MOSFET discharge switching">
 
             <figcaption>
-                LTspice switching simulation at 478.8 V. The upper plot shows
-                the gate-source voltage of both depletion-mode NMOSs, while
-                the lower plot shows current through R2, the 2.7 kΩ discharge
-                resistor. Applying negative gate bias turns the normally-on
-                discharge path off, reducing resistor current from approximately
-                177 mA to zero.
+                Ideal-device LTspice switching simulation at 478.8 V. The upper
+                plot shows gate-source voltage and the lower plot shows current
+                through the 2.7 kΩ discharge resistor.
             </figcaption>
 
         </figure>
@@ -309,27 +300,23 @@
         <h3>Development and testing</h3>
 
         <p>
-            The discharge topology went through several revisions during
-            development. An earlier solid-state implementation switched
-            correctly during low-voltage bench testing, but testing at
-            increasing voltage revealed excessive off-state leakage and
-            heating.
+            The discharge circuit went through several revisions during development.
+            An earlier solid-state implementation switched correctly during
+            low-voltage bench testing, but increasing the test voltage revealed
+            excessive off-state leakage and heating.
         </p>
 
         <p>
-            This prompted further investigation into MOSFET off-state behavior
-            and gate biasing rather than relying only on functional switching
-            tests at reduced voltage. The current revision uses back-to-back
-            depletion-mode MOSFETs and includes footprints for additional
-            gate-source resistance, capacitance, and voltage clamping so the
-            switching behavior can be adjusted during validation.
+            That changed how I test the circuit. Instead of only checking whether
+            the switch turns on and off, I also measure off-state current and
+            gate-source voltage as the bus voltage is increased. The optional gate
+            resistance, capacitance, and clamping footprints on this revision give
+            me places to adjust the gate network during testing if needed.
         </p>
 
         <p>
-            The earlier failure also changed the validation approach for the
-            circuit: correct low-voltage switching alone is not sufficient to
-            characterize a circuit whose leakage and device behavior become
-            increasingly important at several hundred volts.
+            The current revision is undergoing stepped-voltage validation before
+            full-voltage testing.
         </p>
 
     </section>
@@ -342,37 +329,35 @@
         <h2>Power resistor & thermal design</h2>
 
         <p>
-            The precharge, discharge, and TSMP circuits each use high-power
-            resistors, but their electrical and thermal requirements are
-            different. Precharge and discharge handle short-duration energy
-            transfer to and from the inverter DC link, while the TSMP resistors
-            must tolerate continuous dissipation at maximum pack voltage.
-            I sized the resistor and heatsink for each operating case.
+            The precharge, discharge, and TSMP circuits all use high-power resistors,
+            but they see very different loads. Precharge and discharge handle short
+            energy pulses as the inverter DC link is charged or discharged, while
+            the TSMP resistors can see full pack voltage continuously. I sized each
+            resistor and heatsink for its worst-case operating condition.
         </p>
 
 
         <h3>Precharge</h3>
 
         <p>
-            Precharge uses a single 2.2 kΩ, 150 W Vishay LTO150H resistor.
-            With a 478.8 V accumulator and 650 µF DC-link capacitance, the
-            circuit reaches 90% of pack voltage in approximately 3.29 s.
-            The resistor initially dissipates 104.2 W and absorbs approximately
-            74.5 J during the precharge event.
+            Precharge uses a single 2.2 kΩ, 150 W Vishay LTO150H resistor. With a
+            478.8 V accumulator and 650 µF DC-link capacitance, the circuit reaches
+            90% of pack voltage in approximately 3.29 s. The resistor initially
+            dissipates 104.2 W and absorbs approximately 74.5 J during the event.
         </p>
 
         <div class="calculation-box">
             R = 2.2 kΩ<br><br>
 
-            τ = RC = 1.43 s<br><br>
+            τ = RC = 2.2 kΩ × 650 µF = 1.43 s<br><br>
 
-            t<sub>90</sub> = 3.29 s<br><br>
+            t<sub>90</sub> = τ ln(10) = 3.29 s<br><br>
 
             I<sub>peak</sub> = 0.218 A<br><br>
 
             P<sub>peak</sub> = 104.2 W<br><br>
 
-            E<sub>resistor</sub> = 74.5 J<br><br>
+            E<sub>resistor</sub> = ½CV² = 74.5 J<br><br>
 
             P<sub>avg</sub> = 22.6 W<br><br>
 
@@ -380,28 +365,26 @@
         </div>
 
         <p>
-            The thermal analysis resulted in a required heatsink thermal
-            resistance of 5.26 °C/W or lower. The resistor is paired with an
-            Ohmite FA-T220-38E heatsink using thermal interface material and
-            clip mounting to provide the required thermal path from the
-            resistor case.
+            The thermal analysis gave a required heatsink thermal resistance of
+            5.26 °C/W or lower. I paired the resistor with an Ohmite FA-T220-38E
+            heatsink using thermal interface material and clip mounting to provide
+            the thermal path from the resistor case.
         </p>
 
 
         <h3>Discharge</h3>
 
         <p>
-            Active discharge uses a single 2.7 kΩ, 100 W Riedon PF2472
-            resistor. Starting from the maximum 478.8 V DC-link voltage, the
-            calculated time to fall below 60 V is approximately 3.65 s,
-            satisfying the 5 s discharge requirement. After 5 s, the predicted
-            DC-link voltage is approximately 27.8 V.
+            Active discharge uses a single 2.7 kΩ, 100 W Riedon PF2472 resistor.
+            Starting from the maximum 478.8 V DC-link voltage, the calculated time
+            to fall below 60 V is approximately 3.65 s, within the 5 s requirement.
+            After 5 s, the calculated DC-link voltage is approximately 27.8 V.
         </p>
 
         <div class="calculation-box">
             R = 2.7 kΩ<br><br>
 
-            τ = RC = 1.755 s<br><br>
+            τ = RC = 2.7 kΩ × 650 µF = 1.755 s<br><br>
 
             t<sub>60V</sub> = 3.65 s<br><br>
 
@@ -419,26 +402,25 @@
         </div>
 
         <p>
-            The calculated heatsink requirement is 5.6 °C/W or lower. The
-            discharge resistor is paired with an Ohmite FA-T220-25E heatsink.
+            That gives a required heatsink thermal resistance of 5.6 °C/W or lower.
+            The discharge resistor is paired with an Ohmite FA-T220-25E heatsink.
         </p>
 
 
         <h3>TSMP resistors</h3>
 
         <p>
-            Each tractive-system measurement-point line uses a 15 kΩ, 100 W
-            Vishay LTO100 resistor. Unlike precharge and discharge, the TSMP
-            resistors are sized for continuous operation. At maximum pack
-            voltage, a short between the measurement points produces
-            approximately 15.96 mA, with each resistor dissipating
-            approximately 3.82 W.
+            Each tractive-system measurement-point line uses a 15 kΩ, 100 W Vishay
+            LTO100 resistor. Unlike the precharge and discharge resistors, these have
+            to be sized for continuous operation. If the two measurement points are
+            shorted together at maximum pack voltage, 15.96 mA flows through the two
+            resistors in series and each resistor dissipates 3.82 W continuously.
         </p>
 
         <div class="calculation-box">
             R = 15 kΩ per TSMP line<br><br>
 
-            I<sub>short</sub> = 15.96 mA<br><br>
+            I<sub>short</sub> = 478.8 V / 30 kΩ = 15.96 mA<br><br>
 
             P<sub>resistor</sub> = 3.82 W<br><br>
 
@@ -448,9 +430,8 @@
         </div>
 
         <p>
-            This gives a required heatsink thermal resistance of 13.2 °C/W or
-            lower. Each TSMP resistor is mounted to an Ohmite WA-T247-101E
-            heatsink.
+            This gives a required heatsink thermal resistance of 13.2 °C/W or lower.
+            Each TSMP resistor is mounted to an Ohmite WA-T247-101E heatsink.
         </p>
 
     </section>
@@ -463,26 +444,24 @@
         <h2>HV-present detection</h2>
 
         <p>
-            The HV-present circuit provides a hardware indication of whether
-            the tractive system is above the 60 V threshold. A high-impedance
-            resistor divider scales the HV bus voltage to a low-voltage signal,
-            which is compared against a fixed reference using an LM393
-            comparator.
+            I wanted the 60 V check to be pure hardware so the safety indication
+            doesn't depend on software. Five 1 MΩ resistors on the high side and
+            120 kΩ + 10 kΩ on the low side scale the HV bus voltage for an LM393
+            comparator. Splitting the high side across five resistors also keeps
+            the voltage across each resistor to about 93 V at full pack voltage.
         </p>
 
         <p>
-            Five series 1 MΩ resistors are used on the high side of the divider
-            to distribute voltage across multiple components. The comparator
-            changes state at approximately 55.7 V, providing margin around the
-            60 V threshold. Its output drives a PMOS stage, and the resulting
-            HV-present state is transferred across the HV/LV isolation boundary
-            through an optocoupler.
+            The comparator reference is 1.412 V, giving a calculated switching
+            threshold of approximately 55.7 V, slightly below the 60 V threshold.
+            Above that point, the comparator output turns on a PMOS stage that
+            drives an optocoupler across the HV/LV isolation boundary.
         </p>
 
         <p>
-            The resulting hardware signal is used by the vehicle's HV indicator
-            and ready-to-move circuitry. Setting the threshold in hardware keeps
-            the safety indication independent of a software voltage measurement.
+            The resulting hardware signal is used by the vehicle's safety-light
+            circuitry. Setting the threshold in hardware means the HV-present
+            indication does not depend on a software voltage measurement.
         </p>
 
 
@@ -492,7 +471,7 @@
                  alt="HV-present detection schematic">
 
             <figcaption>
-                HV-present divider, comparator, output driver, and isolation stage.
+                HV-present divider, comparator, PMOS output stage, and optocoupler.
             </figcaption>
 
         </figure>
@@ -501,18 +480,16 @@
         <h3>Ready-to-move light</h3>
 
         <p>
-            The ready-to-move (RTM) light is driven by a hardware oscillator
-            rather than relying on software to generate the flashing signal.
-            A 555 timer configured as an astable oscillator produces an
-            approximately 2.7 Hz, 50% duty-cycle output when the RTM signal
-            is enabled.
+            I made the ready-to-move flasher a hardware 555 oscillator so the BMS
+            doesn't have to continuously generate the waveform. With R52 = 270 kΩ
+            and C12 = 1 µF, the design gives an approximately 2.7 Hz flashing
+            frequency.
         </p>
 
         <p>
-            The timer output drives an NMOS/PMOS stage that switches the
-            external 12 V RTM light. Implementing the flashing function in
-            hardware provides predictable light behavior without requiring
-            the BMS to continuously generate the flashing waveform.
+            The timer output drives an NMOS/PMOS stage that switches the external
+            12 V RTM light. Keeping the oscillator in hardware gives the light its
+            flashing behavior without requiring the BMS to generate it in software.
         </p>
 
 
@@ -537,25 +514,24 @@
         <h2>AIR weld detection</h2>
 
         <p>
-            The AIR weld-detection circuit determines whether an accumulator
-            isolation relay has remained closed after it has been commanded
-            open. Two isolated solid-state switches configure the measurement
-            path so the voltage associated with the AIR can be checked while
-            maintaining isolation from the low-voltage control system.
+            This circuit checks whether an AIR is still closed after it was told
+            to open. Two isolated solid-state switches connect the HV sensing path
+            only when a measurement is needed. A high-impedance divider then scales
+            the measured voltage for an LM393 comparator referenced to 1.606 V.
         </p>
 
         <p>
-            When enabled, a high-impedance resistor divider scales the measured
-            voltage for an LM393 comparator referenced to approximately 1.6 V.
-            The comparator output is inverted by a PMOS stage and transferred
-            to the low-voltage system through an optocoupler, providing an
-            isolated digital weld-status signal to the BMS.
+            If the AIR opened properly, the divider reads 0 V. If it's welded, the
+            divider still sees pack voltage. At the 285 V undervoltage lockout, the
+            divider output is 1.92 V, while the comparator trips at about 238 V,
+            giving roughly 20% margin.
         </p>
 
         <p>
-            The isolated switches also allow the measurement network to be
-            disconnected when it is not required, preventing unwanted voltage
-            across the sensing network in other operating states.
+            The comparator drives a PMOS and optocoupler so the BMS gets an isolated
+            digital weld-status signal. The isolated switches also let me disconnect
+            the sensing divider when I don't need a measurement instead of leaving
+            the measurement path connected all the time.
         </p>
 
 
@@ -565,27 +541,25 @@
                  alt="AIR weld-detection schematic">
 
             <figcaption>
-                Isolated AIR weld-detection measurement and output circuitry.
+                Weld checker with isolated switches, sensing divider, comparator,
+                and isolated output.
             </figcaption>
 
         </figure>
 
 
-        <h3>Previous-revision testing</h3>
+        <h3>What I changed after the first board</h3>
 
         <p>
-            During testing of the previous revision, the low-voltage output
-            exhibited a transient that could momentarily exceed the allowable
-            GPIO voltage. A 3.3 V clamp was added at the isolated output to
-            protect the BMS input. The current integrated design retains this
-            protection while consolidating the circuit onto the main board.
+            On the previous revision, the isolated output could spike above what
+            the BMS GPIO can tolerate. I added a 3.3 V zener to clamp the output,
+            while a 33 kΩ / 10 kΩ divider sets the logic level.
         </p>
 
         <p>
-            Testing the previous board also allowed the divider,
-            comparator threshold, isolation stage, and output logic to be
-            evaluated independently before integrating the function into the
-            larger accumulator electronics system.
+            Building and testing that circuit separately also let me debug the
+            sensing divider, comparator threshold, isolation stage, and output
+            before integrating the whole function onto this board.
         </p>
 
     </section>
@@ -598,27 +572,26 @@
         <h2>PCB layout</h2>
 
         <p>
-            The board is a four-layer design containing both low-voltage
-            control electronics and circuitry connected to the 478.8 V
-            tractive system. The layout uses physical separation between
-            the HV and LV regions, with a 5 mm keepout across the isolation
-            boundary and no low-voltage ground plane extending beneath
-            isolated high-voltage circuitry.
+            It's a four-layer board containing both low-voltage control electronics
+            and circuits connected to the 478.8 V tractive system. I kept the LV
+            control circuitry on one side of the board and the HV circuitry on the
+            other, with a 5 mm keepout across the isolation boundary. At the isolator
+            packages themselves, the spacing is 4.7 mm.
         </p>
 
         <p>
-            Ground pours and via stitching throughout the low-voltage region
-            provide short return paths and tie the ground planes together.
-            High-voltage functions are kept physically separated from these
-            low-voltage ground pours, and circuits that cross the HV/LV
-            boundary do so only through their intended isolation components.
+            There is no LV ground plane underneath the isolated HV circuitry. On the
+            LV side, I use ground pours with stitching vias to tie the planes together
+            and give signals short return paths. Anything that crosses the HV/LV
+            boundary does so through its intended isolation component.
         </p>
 
         <p>
-            The precharge, discharge, and TSMP power resistors use dedicated
-            heatsink mounting provisions incorporated into the PCB. Connector
-            placement and board dimensions are also constrained by the
-            accumulator enclosure and the three-PCB electronics stack.
+            The precharge, discharge, and TSMP power resistors also have heatsink
+            mounting provisions built into the PCB. Connector placement and the board
+            outline are constrained by the accumulator enclosure and the three-PCB
+            electronics stack, so the layout had to work around the mechanical
+            packaging as well as the electrical isolation requirements.
         </p>
 
 
@@ -628,15 +601,13 @@
                  alt="HV Control Board PCB layout">
 
             <figcaption>
-                PCB layout showing functional partitioning, ground pours,
-                via stitching, power-component mounting, and the HV/LV
-                isolation boundary.
+                PCB layout showing the HV/LV split, ground pours, power-component
+                mounting, and isolation boundary.
             </figcaption>
 
         </figure>
 
     </section>
-
 
 
     <!-- LAST UPDATED -->
