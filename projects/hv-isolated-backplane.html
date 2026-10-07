@@ -31,29 +31,31 @@
         <h1>HV Isolated Backplane PCB</h1>
 
         <p class="project-subtitle">
-            2026–27 Formula SAE EV · Accumulator electronics integration
+            2026–27 Formula SAE EV · Schematic complete · PCB layout in progress
         </p>
 
         <p class="project-lead">
-            Backplane PCB for the accumulator electronics stack, designed to
-            distribute low-voltage power and control signals between boards
-            that interface with the high-voltage tractive system while keeping
-            the backplane itself isolated from tractive-system voltage.
+            Low-voltage backplane for the accumulator electronics stack,
+            designed to distribute power and route control, communication,
+            safety, and debug signals between the BMS, HV Control Board, and
+            service-section electronics while remaining isolated from
+            tractive-system voltage.
         </p>
 
     </header>
 
 
-    <!-- MAIN BOARD IMAGE -->
+    <!-- MAIN SCHEMATIC -->
 
     <figure class="full-image">
 
-        <div class="project-placeholder board-layout">
-            BACKPLANE PCB RENDER
-        </div>
+        <img src="../images/hv-backplane/top-level.png"
+             alt="HV Isolated Backplane top-level schematic">
 
         <figcaption>
-            HV Isolated Backplane PCB.
+            Top-level backplane schematic showing power and signal routing
+            between the accumulator control boards and service-section
+            electronics.
         </figcaption>
 
     </figure>
@@ -66,176 +68,87 @@
         <h2>Overview</h2>
 
         <p>
-            The HV Isolated Backplane PCB provides the electrical interface
-            between the PCBs in the accumulator electronics stack. Although
-            the boards connected to the backplane contain circuitry interfacing
-            directly with the tractive system, the backplane is intentionally
-            isolated from high voltage and carries only low-voltage power,
-            control, and communication signals.
+            The HV Isolated Backplane PCB forms the electrical interface
+            between the control boards and external electronics in the
+            accumulator. It sits at the base of the three-PCB electronics
+            stack and provides a defined interconnect between the BMS Parent,
+            HV Control Board, and components throughout the accumulator
+            service section.
         </p>
 
         <p>
-            The board replaces a large portion of the point-to-point wiring
-            that would otherwise be required between the accumulator
-            electronics. Centralizing these connections simplifies the
-            electrical architecture, reduces harness complexity, and creates
-            a defined interface between the individual PCBs.
+            Although the boards connected to the backplane contain circuitry
+            that interfaces directly with the 478.8 V tractive system, the
+            backplane itself remains in the low-voltage domain. Signals from
+            HV-referenced circuitry are isolated on their respective functional
+            boards before reaching the backplane, so tractive-system voltage
+            is not intentionally routed through it.
         </p>
 
         <p>
-            The backplane is designed around the mechanical arrangement of
-            the accumulator electronics stack, so electrical routing,
-            connector placement, board spacing, and serviceability were
-            considered together rather than treating the PCB as an independent
-            circuit board.
+            Moving these connections onto a PCB replaces a large amount of
+            point-to-point wiring inside the accumulator. This creates a
+            documented interface between subsystems and makes assembly,
+            debugging, and future board revisions more repeatable.
         </p>
 
 
         <h3>Main functions</h3>
 
         <ul>
-            <li>Low-voltage power distribution between accumulator PCBs</li>
-            <li>Control and status signal routing</li>
-            <li>Communication routing between boards</li>
-            <li>Defined electrical interfaces between accumulator subsystems</li>
-            <li>Reduction of point-to-point internal harnessing</li>
-            <li>Mechanical integration of the PCB stack</li>
-            <li>Isolation of the backplane from tractive-system voltage</li>
+            <li>12 V low-voltage power distribution</li>
+            <li>Shutdown-circuit power distribution</li>
+            <li>CAN communication routing</li>
+            <li>AIR and precharge control-signal routing</li>
+            <li>AIR weld-detection and safety-signal routing</li>
+            <li>HVIL and IMD signal routing</li>
+            <li>Current-sensor and E-meter interfaces</li>
+            <li>Temperature-sensor interface</li>
+            <li>Debug and safety-light signal routing</li>
         </ul>
 
     </section>
 
 
-    <!-- SYSTEM ARCHITECTURE -->
+    <!-- SYSTEM INTERCONNECT -->
 
     <section class="project-section">
 
-        <h2>System architecture</h2>
+        <h2>System interconnect</h2>
 
         <p>
-            The backplane sits at the base of the accumulator electronics stack
-            and connects the individual control boards through board-to-board
-            interfaces. Each PCB remains responsible for its own functional
-            circuitry, while the backplane provides the shared interconnect
-            required between them.
+            The backplane connects several otherwise separate accumulator
+            subsystems. The BMS Parent and HV Control Board plug into the
+            electronics stack, while additional connectors provide interfaces
+            to the service section, current sensor, E-meter, IMD, temperature
+            sensors, and the vehicle low-voltage system.
         </p>
 
         <p>
-            A major design constraint was maintaining the isolation architecture
-            of the system. Signals originating from circuitry connected to the
-            tractive system are isolated on their respective functional boards
-            before reaching the backplane. As a result, high voltage is not
-            routed through the backplane despite its location within the HV
-            electronics assembly.
-        </p>
-
-        <figure class="content-image">
-
-            <div class="project-placeholder">
-                STACK / SYSTEM DIAGRAM
-            </div>
-
-            <figcaption>
-                Accumulator electronics stack and backplane architecture.
-            </figcaption>
-
-        </figure>
-
-    </section>
-
-
-    <!-- INTERCONNECT -->
-
-    <section class="project-section">
-
-        <h2>Interconnect and signal routing</h2>
-
-        <p>
-            The primary purpose of the board is interconnect rather than signal
-            processing. Power rails, control signals, status outputs, and
-            communication buses are routed between the appropriate boards
-            through defined connectors.
+            The BMS provides control signals for the positive and negative
+            AIRs, precharge, and AIR weld-detection circuitry. The backplane
+            routes these signals to the HV Control Board and returns status
+            and debug signals to the low-voltage system.
         </p>
 
         <p>
-            Moving these connections onto a PCB reduces the number of discrete
-            wires and connectors inside the accumulator and makes the interface
-            between boards explicit in the schematic. This also makes assembly
-            and debugging more repeatable because signals can be traced through
-            a documented PCB rather than through a point-to-point harness.
+            CAN, HVIL, IMD fault, temperature sensing, E-meter connections,
+            fan control, and other vehicle interfaces are also consolidated
+            through the board. Keeping these interfaces in one schematic
+            makes the accumulator signal architecture explicit rather than
+            distributing it across a large internal wiring harness.
         </p>
 
-        <figure class="content-image">
-
-            <div class="project-placeholder">
-                TOP-LEVEL SCHEMATIC
-            </div>
-
-            <figcaption>
-                Backplane top-level schematic and board interfaces.
-            </figcaption>
-
-        </figure>
-
-    </section>
-
-
-    <!-- DESIGN CONSTRAINTS -->
-
-    <section class="project-section">
-
-        <h2>Design constraints</h2>
-
-        <p>
-            Unlike the HV Control Board, the backplane does not intentionally
-            carry tractive-system voltage. Its main constraints instead come
-            from system integration: fitting the accumulator electronics stack,
-            maintaining the required isolation architecture, routing a large
-            number of signals between fixed connector locations, and keeping
-            the assembled electronics serviceable.
-        </p>
-
-        <ul>
-            <li>No intentional tractive-system voltage on the backplane</li>
-            <li>Fixed connector locations imposed by the PCB stack</li>
-            <li>Compact routing of power, control, and communication signals</li>
-            <li>Clear separation and organization of subsystem interfaces</li>
-            <li>Reduced accumulator harness complexity</li>
-            <li>Mechanical compatibility with the surrounding electronics</li>
-        </ul>
-
-    </section>
-
-
-    <!-- PCB LAYOUT -->
-
-    <section class="project-section">
-
-        <h2>PCB layout</h2>
-
-        <p>
-            Layout was driven heavily by the physical locations of the boards
-            and connectors in the accumulator stack. Because many endpoints
-            were mechanically constrained, connector pin assignments and trace
-            routing were considered together to reduce unnecessary crossings
-            and keep the interconnect organized.
-        </p>
-
-        <p>
-            Ground pours and via stitching provide low-impedance return paths
-            through the low-voltage system. Power and signal routing are kept
-            organized by function, with communication and control connections
-            routed between their corresponding board interfaces.
-        </p>
 
         <figure class="full-image">
 
-            <div class="project-placeholder board-layout">
-                PCB LAYOUT / COPPER VIEW
-            </div>
+            <img src="../images/hv-backplane/top-level.png"
+                 alt="Backplane system interconnect schematic">
 
             <figcaption>
-                Backplane PCB layout and board-to-board interconnect.
+                Top-level signal architecture connecting the BMS Parent,
+                HV Control Board, service section, sensors, and vehicle
+                interfaces.
             </figcaption>
 
         </figure>
@@ -243,88 +156,126 @@
     </section>
 
 
-    <!-- INTEGRATION -->
+    <!-- POWER MANAGEMENT -->
 
     <section class="project-section">
 
-        <h2>Mechanical integration</h2>
+        <h2>Power management</h2>
 
         <p>
-            The PCB also acts as part of the physical integration strategy for
-            the accumulator electronics. Board dimensions, connector positions,
-            mounting locations, and clearances are designed around the complete
-            PCB stack rather than around the backplane alone.
+            The accumulator electronics can receive 12 V power from separate
+            ready-power and charge-power sources depending on whether the
+            vehicle is operating or charging. The backplane combines these
+            sources into the common LV power rail used by the accumulator
+            electronics.
         </p>
 
         <p>
-            Using a backplane creates a modular electronics assembly in which
-            individual functional boards can be installed and connected through
-            a repeatable interface while reducing the amount of internal
-            harnessing required around the stack.
+            Each 12 V input has independent overcurrent and reverse-polarity
+            protection before the two sources are diode-ORed onto the LV power
+            rail. The ORing diodes prevent either supply from backfeeding the
+            other while allowing the electronics to be powered from the
+            appropriate source in either operating state.
         </p>
 
-        <div class="two-images">
-
-            <figure>
-
-                <div class="project-placeholder small">
-                    PCB STACK RENDER
-                </div>
-
-                <figcaption>
-                    Backplane integrated with the accumulator PCB stack.
-                </figcaption>
-
-            </figure>
-
-            <figure>
-
-                <div class="project-placeholder small">
-                    ACCUMULATOR / ASSEMBLY VIEW
-                </div>
-
-                <figcaption>
-                    Electronics packaging inside the accumulator.
-                </figcaption>
-
-            </figure>
-
-        </div>
-
-    </section>
-
-
-    <!-- TESTING -->
-
-    <section class="project-section">
-
-        <h2>Testing</h2>
-
-        <p>
-            Validation of the backplane focuses on connectivity, power
-            distribution, signal integrity, isolation, and integration with the
-            connected PCBs. Continuity and short-circuit checks are performed
-            before installing the functional boards, followed by powered
-            subsystem testing as the electronics stack is assembled.
-        </p>
 
         <figure class="content-image">
 
-            <div class="project-placeholder photo">
-                BACKPLANE / STACK TESTING PHOTO
-            </div>
+            <img src="../images/hv-backplane/power-management.png"
+                 alt="Backplane 12 volt power management schematic">
 
             <figcaption>
-                Backplane and accumulator electronics integration testing.
+                Ready-power and charge-power inputs with independent protection
+                and diode ORing onto the common 12 V LV power rail.
             </figcaption>
 
         </figure>
 
-        <h3>Current status</h3>
+    </section>
+
+
+    <!-- ISOLATION -->
+
+    <section class="project-section">
+
+        <h2>HV isolation architecture</h2>
 
         <p>
-            PCB fabrication and system-level validation status to be added as
-            the accumulator electronics stack is assembled.
+            A central design requirement is that the backplane can interconnect
+            electronics associated with the tractive system without becoming
+            part of the high-voltage domain itself.
+        </p>
+
+        <p>
+            Isolation is therefore handled on the functional boards at the
+            point where signals cross between HV-referenced and LV-referenced
+            circuitry. For example, HV-present and AIR weld-detection signals
+            are isolated before being passed into the low-voltage system.
+            Once these signals reach the backplane, they are already
+            LV-referenced and can be routed alongside the other control
+            interfaces.
+        </p>
+
+        <p>
+            This keeps the isolation boundary localized to the circuits that
+            require it and allows the backplane to remain a low-voltage
+            interconnect despite being physically located within the
+            accumulator electronics assembly.
+        </p>
+
+    </section>
+
+
+    <!-- DESIGN APPROACH -->
+
+    <section class="project-section">
+
+        <h2>Design approach</h2>
+
+        <p>
+            The main challenge of the backplane is system integration rather
+            than complex signal processing. Connector locations are constrained
+            by the physical PCB stack, while the board must route a relatively
+            large number of power, communication, control, safety, and debug
+            signals between several different subsystems.
+        </p>
+
+        <p>
+            I developed the top-level schematic around the complete accumulator
+            architecture rather than treating each connector independently.
+            Signals are grouped by destination and function so the interfaces
+            between the BMS, HV Control Board, service section, and external
+            sensors remain clear.
+        </p>
+
+        <p>
+            The backplane also provides a single place to define connector
+            pinouts and system-level net names. This reduces ambiguity during
+            harness assembly and makes it easier to trace a signal from an
+            external component through the electronics stack during debugging.
+        </p>
+
+    </section>
+
+
+    <!-- CURRENT STATUS -->
+
+    <section class="project-section">
+
+        <h2>Current status</h2>
+
+        <p>
+            The system architecture and schematic are complete, including the
+            board-to-board interfaces, external service-section connections,
+            and 12 V power-management circuitry. PCB layout is currently in
+            progress.
+        </p>
+
+        <p>
+            The next stage is translating the fixed mechanical locations of
+            the PCB stack and connectors into the board layout, followed by
+            fabrication, continuity testing, power bring-up, and integration
+            with the BMS Parent and HV Control Board.
         </p>
 
     </section>
