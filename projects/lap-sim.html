@@ -352,18 +352,83 @@
         <p>
             One of the primary uses of the simulation was comparing accumulator
             configurations for the 2026–27 vehicle. Changing series count
-            affects operating voltage and motor performance, while changing
-            parallel count affects capacity, current per cell, voltage sag,
-            temperature, and pack mass.
+            affects operating voltage, available power, and vehicle performance,
+            while changing parallel count affects energy capacity, current per
+            cell, voltage sag, temperature, and pack mass.
         </p>
 
         <p>
             Instead of selecting the accumulator from energy capacity alone,
-            candidate configurations were run through the complete vehicle
-            simulation. This allowed each configuration to be evaluated based
-            on endurance energy margin, electrical limits, thermal behavior,
-            and the performance effect of accumulator mass.
+            candidate configurations were run through the complete endurance
+            simulation. I compared configurations from 108 to 114 cells in
+            series and from five to seven cells in parallel, tracking energy
+            consumption, final state of charge, remaining usable energy, and
+            simulated lap time.
         </p>
+
+
+        <h3>Parallel-cell selection</h3>
+
+        <p>
+            The first comparison evaluated 5p, 6p, and 7p configurations across
+            several series counts. Five-parallel configurations reduced pack
+            capacity and mass, but left relatively little usable energy margin
+            at the end of the simulated endurance event. Seven-parallel
+            configurations provided substantially more energy margin, but at
+            the cost of additional cells and accumulator mass.
+        </p>
+
+        <p>
+            Six cells in parallel provided a middle ground between these two
+            cases, retaining significantly more usable energy at the end of
+            endurance than the 5p configurations without the additional mass
+            of a 7p accumulator.
+        </p>
+
+
+        <figure class="full-image">
+
+            <img src="../images/lap-simulation/parallel-selection.png"
+                 alt="Comparison of candidate accumulator series and parallel configurations">
+
+            <figcaption>
+                Endurance results used to compare 5p, 6p, and 7p accumulator
+                configurations. Usable capacity assumes operation between
+                5% and 95% state of charge.
+            </figcaption>
+
+        </figure>
+
+
+        <h3>Series-cell selection</h3>
+
+        <p>
+            After selecting 6p, I compared 108s, 110s, 112s, and 114s
+            configurations. Increasing series count raises pack voltage and
+            usable energy while also affecting vehicle performance through the
+            electrical and motor models.
+        </p>
+
+        <p>
+            Of the 6p configurations evaluated, 114s6p produced the fastest
+            simulated lap time and the largest remaining usable SOC. The model
+            predicted a 70.777 s lap and approximately 24% remaining usable SOC
+            after the endurance simulation.
+        </p>
+
+
+        <figure class="full-image">
+
+            <img src="../images/lap-simulation/series-selection.png"
+                 alt="Comparison of 6p accumulator configurations with different series counts">
+
+            <figcaption>
+                Final comparison of the 6p accumulator configurations used to
+                select the series-cell count.
+            </figcaption>
+
+        </figure>
+
 
         <p>
             The analysis supported selection of a 114s6p accumulator using
@@ -378,7 +443,7 @@
 
     <section class="project-section">
 
-        <h2>Endurance simulation</h2>
+        <h2>Selected configuration</h2>
 
         <p>
             A representative simulation of the selected 114s6p configuration
@@ -388,11 +453,10 @@
         </p>
 
         <p>
-            In one simulated endurance run, the vehicle used approximately
-            5.53 kWh and finished at 26.6% state of charge, with a simulated
-            lap time of approximately 70.8 seconds. These results provide an
-            estimate of remaining energy margin while simultaneously checking
-            electrical and thermal behavior throughout the event.
+            The simulation used approximately 5.53 kWh and finished at 26.6%
+            state of charge. With the pack constrained to a 5–95% operating
+            range, approximately 24% of usable SOC remained at the end of the
+            event. The simulated lap time was 70.777 seconds.
         </p>
 
 
@@ -405,13 +469,17 @@
 
             Nominal energy: ≈ 7.35 kWh<br><br>
 
+            Usable energy (5–95% SOC): ≈ 6.62 kWh<br><br>
+
             Starting SOC: 95%<br><br>
 
             Simulated energy used: ≈ 5.53 kWh<br><br>
 
             Final SOC: ≈ 26.6%<br><br>
 
-            Simulated lap time: ≈ 70.8 s
+            Remaining usable SOC: ≈ 24.0%<br><br>
+
+            Simulated lap time: 70.777 s
         </div>
 
     </section>
