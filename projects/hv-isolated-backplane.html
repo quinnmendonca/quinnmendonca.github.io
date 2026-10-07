@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HV Isolated Backplane PCB — Quinn Mendonca</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<nav>
+    <a class="site-name" href="../index.html">Quinn Mendonca</a>
+
+    <div class="nav-links">
+        <a href="../index.html#projects">Projects</a>
+        <a href="../index.html#about">About</a>
+    </div>
+</nav>
+
+
+<main class="project-page">
+
+    <!-- TITLE -->
+
+    <header class="project-intro">
+
+        <a class="back-link" href="../index.html">← Projects</a>
+
+        <h1>HV Isolated Backplane PCB</h1>
+
+        <p class="project-subtitle">
+            2026–27 Formula SAE EV · Accumulator electronics integration
+        </p>
+
+        <p class="project-lead">
+            Backplane PCB for the accumulator electronics stack, designed to
+            distribute low-voltage power and control signals between boards
+            that interface with the high-voltage tractive system while keeping
+            the backplane itself isolated from tractive-system voltage.
+        </p>
+
+    </header>
+
+
+    <!-- MAIN BOARD IMAGE -->
+
+    <figure class="full-image">
+
+        <div class="project-placeholder board-layout">
+            BACKPLANE PCB RENDER
+        </div>
+
+        <figcaption>
+            HV Isolated Backplane PCB.
+        </figcaption>
+
+    </figure>
+
+
+    <!-- OVERVIEW -->
+
+    <section class="project-section">
+
+        <h2>Overview</h2>
+
+        <p>
+            The HV Isolated Backplane PCB provides the electrical interface
+            between the PCBs in the accumulator electronics stack. Although
+            the boards connected to the backplane contain circuitry interfacing
+            directly with the tractive system, the backplane is intentionally
+            isolated from high voltage and carries only low-voltage power,
+            control, and communication signals.
+        </p>
+
+        <p>
+            The board replaces a large portion of the point-to-point wiring
+            that would otherwise be required between the accumulator
+            electronics. Centralizing these connections simplifies the
+            electrical architecture, reduces harness complexity, and creates
+            a defined interface between the individual PCBs.
+        </p>
+
+        <p>
+            The backplane is designed around the mechanical arrangement of
+            the accumulator electronics stack, so electrical routing,
+            connector placement, board spacing, and serviceability were
+            considered together rather than treating the PCB as an independent
+            circuit board.
+        </p>
+
+
+        <h3>Main functions</h3>
+
+        <ul>
+            <li>Low-voltage power distribution between accumulator PCBs</li>
+            <li>Control and status signal routing</li>
+            <li>Communication routing between boards</li>
+            <li>Defined electrical interfaces between accumulator subsystems</li>
+            <li>Reduction of point-to-point internal harnessing</li>
+            <li>Mechanical integration of the PCB stack</li>
+            <li>Isolation of the backplane from tractive-system voltage</li>
+        </ul>
+
+    </section>
+
+
+    <!-- SYSTEM ARCHITECTURE -->
+
+    <section class="project-section">
+
+        <h2>System architecture</h2>
+
+        <p>
+            The backplane sits at the base of the accumulator electronics stack
+            and connects the individual control boards through board-to-board
+            interfaces. Each PCB remains responsible for its own functional
+            circuitry, while the backplane provides the shared interconnect
+            required between them.
+        </p>
+
+        <p>
+            A major design constraint was maintaining the isolation architecture
+            of the system. Signals originating from circuitry connected to the
+            tractive system are isolated on their respective functional boards
+            before reaching the backplane. As a result, high voltage is not
+            routed through the backplane despite its location within the HV
+            electronics assembly.
+        </p>
+
+        <figure class="content-image">
+
+            <div class="project-placeholder">
+                STACK / SYSTEM DIAGRAM
+            </div>
+
+            <figcaption>
+                Accumulator electronics stack and backplane architecture.
+            </figcaption>
+
+        </figure>
+
+    </section>
+
+
+    <!-- INTERCONNECT -->
+
+    <section class="project-section">
+
+        <h2>Interconnect and signal routing</h2>
+
+        <p>
+            The primary purpose of the board is interconnect rather than signal
+            processing. Power rails, control signals, status outputs, and
+            communication buses are routed between the appropriate boards
+            through defined connectors.
+        </p>
+
+        <p>
+            Moving these connections onto a PCB reduces the number of discrete
+            wires and connectors inside the accumulator and makes the interface
+            between boards explicit in the schematic. This also makes assembly
+            and debugging more repeatable because signals can be traced through
+            a documented PCB rather than through a point-to-point harness.
+        </p>
+
+        <figure class="content-image">
+
+            <div class="project-placeholder">
+                TOP-LEVEL SCHEMATIC
+            </div>
+
+            <figcaption>
+                Backplane top-level schematic and board interfaces.
+            </figcaption>
+
+        </figure>
+
+    </section>
+
+
+    <!-- DESIGN CONSTRAINTS -->
+
+    <section class="project-section">
+
+        <h2>Design constraints</h2>
+
+        <p>
+            Unlike the HV Control Board, the backplane does not intentionally
+            carry tractive-system voltage. Its main constraints instead come
+            from system integration: fitting the accumulator electronics stack,
+            maintaining the required isolation architecture, routing a large
+            number of signals between fixed connector locations, and keeping
+            the assembled electronics serviceable.
+        </p>
+
+        <ul>
+            <li>No intentional tractive-system voltage on the backplane</li>
+            <li>Fixed connector locations imposed by the PCB stack</li>
+            <li>Compact routing of power, control, and communication signals</li>
+            <li>Clear separation and organization of subsystem interfaces</li>
+            <li>Reduced accumulator harness complexity</li>
+            <li>Mechanical compatibility with the surrounding electronics</li>
+        </ul>
+
+    </section>
+
+
+    <!-- PCB LAYOUT -->
+
+    <section class="project-section">
+
+        <h2>PCB layout</h2>
+
+        <p>
+            Layout was driven heavily by the physical locations of the boards
+            and connectors in the accumulator stack. Because many endpoints
+            were mechanically constrained, connector pin assignments and trace
+            routing were considered together to reduce unnecessary crossings
+            and keep the interconnect organized.
+        </p>
+
+        <p>
+            Ground pours and via stitching provide low-impedance return paths
+            through the low-voltage system. Power and signal routing are kept
+            organized by function, with communication and control connections
+            routed between their corresponding board interfaces.
+        </p>
+
+        <figure class="full-image">
+
+            <div class="project-placeholder board-layout">
+                PCB LAYOUT / COPPER VIEW
+            </div>
+
+            <figcaption>
+                Backplane PCB layout and board-to-board interconnect.
+            </figcaption>
+
+        </figure>
+
+    </section>
+
+
+    <!-- INTEGRATION -->
+
+    <section class="project-section">
+
+        <h2>Mechanical integration</h2>
+
+        <p>
+            The PCB also acts as part of the physical integration strategy for
+            the accumulator electronics. Board dimensions, connector positions,
+            mounting locations, and clearances are designed around the complete
+            PCB stack rather than around the backplane alone.
+        </p>
+
+        <p>
+            Using a backplane creates a modular electronics assembly in which
+            individual functional boards can be installed and connected through
+            a repeatable interface while reducing the amount of internal
+            harnessing required around the stack.
+        </p>
+
+        <div class="two-images">
+
+            <figure>
+
+                <div class="project-placeholder small">
+                    PCB STACK RENDER
+                </div>
+
+                <figcaption>
+                    Backplane integrated with the accumulator PCB stack.
+                </figcaption>
+
+            </figure>
+
+            <figure>
+
+                <div class="project-placeholder small">
+                    ACCUMULATOR / ASSEMBLY VIEW
+                </div>
+
+                <figcaption>
+                    Electronics packaging inside the accumulator.
+                </figcaption>
+
+            </figure>
+
+        </div>
+
+    </section>
+
+
+    <!-- TESTING -->
+
+    <section class="project-section">
+
+        <h2>Testing</h2>
+
+        <p>
+            Validation of the backplane focuses on connectivity, power
+            distribution, signal integrity, isolation, and integration with the
+            connected PCBs. Continuity and short-circuit checks are performed
+            before installing the functional boards, followed by powered
+            subsystem testing as the electronics stack is assembled.
+        </p>
+
+        <figure class="content-image">
+
+            <div class="project-placeholder photo">
+                BACKPLANE / STACK TESTING PHOTO
+            </div>
+
+            <figcaption>
+                Backplane and accumulator electronics integration testing.
+            </figcaption>
+
+        </figure>
+
+        <h3>Current status</h3>
+
+        <p>
+            PCB fabrication and system-level validation status to be added as
+            the accumulator electronics stack is assembled.
+        </p>
+
+    </section>
+
+
+    <!-- LAST UPDATED -->
+
+    <div class="project-updated">
+        Last updated October 2026
+    </div>
+
+</main>
+
+
+<footer>
+    <p>Quinn Mendonca</p>
+    <p><a href="../index.html">Back to projects</a></p>
+</footer>
+
+</body>
+
+</html>
