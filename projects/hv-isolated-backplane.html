@@ -31,15 +31,16 @@
         <h1>HV Isolated Backplane PCB</h1>
 
         <p class="project-subtitle">
-            2026–27 Formula SAE EV
+            2026–27 Formula SAE EV · Accumulator electronics integration
         </p>
 
         <p class="project-lead">
-            Low-voltage backplane for the accumulator electronics stack,
-            designed to distribute power and route control, communication,
-            safety, and debug signals between the BMS, HV Control Board, and
-            service-section electronics while remaining isolated from
-            tractive-system voltage.
+            I designed this board as the low-voltage backplane at the base of the
+            accumulator's three-board electronics stack. The BMS Parent and
+            <a href="hv-control-board.html">HV Control Board</a> plug into it, and
+            the backplane connects them to the vehicle, service section, and sensors.
+            Although it interconnects boards with circuitry connected to the tractive
+            system, the backplane itself stays entirely in the low-voltage domain.
         </p>
 
     </header>
@@ -53,9 +54,8 @@
              alt="HV Isolated Backplane top-level schematic">
 
         <figcaption>
-            Top-level backplane schematic showing power and signal routing
-            between the accumulator control boards and service-section
-            electronics.
+            Top-level schematic showing the board-to-board, vehicle, and
+            service-section interfaces.
         </figcaption>
 
     </figure>
@@ -68,28 +68,25 @@
         <h2>Overview</h2>
 
         <p>
-            The HV Isolated Backplane PCB forms the electrical interface
-            between the control boards and external electronics in the
-            accumulator. It sits at the base of the three-PCB electronics
-            stack and provides a defined interconnect between the BMS Parent,
-            HV Control Board, and components throughout the accumulator
-            service section.
+            The main reason for this board was to replace a large amount of
+            point-to-point wiring inside the accumulator with one defined electrical
+            interface. Instead of separately wiring the BMS, HV Control Board,
+            service-section components, sensors, and vehicle harness together, those
+            connections are collected on the backplane.
         </p>
 
         <p>
-            Although the boards connected to the backplane contain circuitry
-            that interfaces directly with the 478.8 V tractive system, the
-            backplane itself remains in the low-voltage domain. Signals from
-            HV-referenced circuitry are isolated on their respective functional
-            boards before reaching the backplane, so tractive-system voltage
-            is not intentionally routed through it.
+            I drew the top-level schematic around the whole accumulator before
+            placing any connectors. I started with every signal that had to move
+            between the BMS, HV Control Board, vehicle, and service section, then
+            used that to define the connectors and pinout.
         </p>
 
         <p>
-            Moving these connections onto a PCB replaces a large amount of
-            point-to-point wiring inside the accumulator. This creates a
-            documented interface between subsystems and makes assembly,
-            debugging, and future board revisions more repeatable.
+            This also gives us one place to define system-level net names and
+            connector pinouts. If I need to trace an AIR command, CAN line, sensor
+            signal, or fault signal during debugging, I can follow it through the
+            backplane instead of tracing it through a bundle of individual wires.
         </p>
 
 
@@ -99,83 +96,113 @@
             <li>12 V low-voltage power distribution</li>
             <li>Shutdown-circuit power distribution</li>
             <li>CAN communication routing</li>
-            <li>AIR and precharge control-signal routing</li>
-            <li>AIR weld-detection and safety-signal routing</li>
+            <li>AIR and precharge control routing</li>
+            <li>AIR weld-detection signal routing</li>
             <li>HVIL and IMD signal routing</li>
             <li>Current-sensor and E-meter interfaces</li>
-            <li>Temperature-sensor interface</li>
-            <li>Debug and safety-light signal routing</li>
+            <li>Temperature-sensor interfaces</li>
+            <li>Charging and J1772 signal routing</li>
+            <li>Debug and safety-light connections</li>
         </ul>
 
     </section>
 
 
-    <!-- SYSTEM INTERCONNECT -->
+    <!-- INTERCONNECT -->
 
     <section class="project-section">
 
-        <h2>System interconnect</h2>
+        <h2>Interconnect architecture</h2>
 
         <p>
-            The backplane connects several otherwise separate accumulator
-            subsystems. The BMS Parent and HV Control Board plug into the
-            electronics stack, while additional connectors provide interfaces
-            to the service section, current sensor, E-meter, IMD, temperature
-            sensors, and the vehicle low-voltage system.
+            There are four main interfaces: a vehicle-side low-voltage connector
+            with 26 connected pins, the BMS Parent connector, the HV Control Board
+            connector, and a connector to the service section. The service-section
+            connection reaches the AIRs, current sensor, IMD, E-meter, and six
+            temperature sensors inside the accumulator.
         </p>
 
         <p>
-            The BMS provides control signals for the positive and negative
-            AIRs, precharge, and AIR weld-detection circuitry. The backplane
-            routes these signals to the HV Control Board and returns status
-            and debug signals to the low-voltage system.
+            Most of the control traffic runs between the BMS Parent and HV Control
+            Board. The BMS sends the positive AIR, negative AIR, and precharge
+            commands through the backplane, along with the two enables used by the
+            AIR weld-detection circuit. The weld result is then routed back to the
+            BMS.
         </p>
 
         <p>
-            CAN, HVIL, IMD fault, temperature sensing, E-meter connections,
-            fan control, and other vehicle interfaces are also consolidated
-            through the board. Keeping these interfaces in one schematic
-            makes the accumulator signal architecture explicit rather than
-            distributing it across a large internal wiring harness.
+            CAN, fan PWM, BMS fault, and the J1772 charging signals run between
+            the vehicle connector and the BMS Parent. Other signals only need to
+            move between the two boards in the stack, so they never have to leave
+            the accumulator through the external harness.
         </p>
 
-
-        <figure class="full-image">
-
-            <img src="../images/hv-backplane/top-level.png"
-                 alt="Backplane system interconnect schematic">
-
-            <figcaption>
-                Top-level signal architecture connecting the BMS Parent,
-                HV Control Board, service section, sensors, and vehicle
-                interfaces.
-            </figcaption>
-
-        </figure>
+        <p>
+            I tried to keep that distinction clear in the schematic: signals that
+            only need to move between boards stay internal to the stack, while
+            vehicle and service-section signals leave through their respective
+            connectors. That keeps the external harness from carrying signals that
+            don't actually need to leave the accumulator electronics.
+        </p>
 
     </section>
 
 
-    <!-- POWER MANAGEMENT -->
+    <!-- DEBUG -->
+
+    <section class="project-section">
+
+        <h2>Debug and safety interfaces</h2>
+
+        <p>
+            I brought the positive AIR, negative AIR, and precharge command lines
+            out to debug pins on the vehicle connector. That means I can watch what
+            the BMS is actually commanding from outside the accumulator instead of
+            opening the enclosure and probing the board stack directly.
+        </p>
+
+        <p>
+            This is useful when a problem could be either a BMS command issue or
+            something on the HV Control Board. I can check whether the command
+            reached the backplane first and narrow down which side of the system
+            I need to debug.
+        </p>
+
+        <p>
+            The HVIL loop and IMD fault line are different. They are straight
+            pass-throughs between the vehicle connector and service section, and
+            the backplane doesn't make decisions based on them. It just provides
+            the connection through the accumulator electronics assembly.
+        </p>
+
+    </section>
+
+
+    <!-- POWER -->
 
     <section class="project-section">
 
         <h2>Power management</h2>
 
         <p>
-            The accumulator electronics can receive 12 V power from separate
-            ready-power and charge-power sources depending on whether the
-            vehicle is operating or charging. The backplane combines these
-            sources into the common LV power rail used by the accumulator
-            electronics.
+            The accumulator electronics can run from one of two 12 V sources:
+            ready power when the car is running and charge power when the car is
+            charging. Both need to power the same LV rail, but I don't want either
+            source feeding backwards into the other one.
         </p>
 
         <p>
-            Each 12 V input has independent overcurrent and reverse-polarity
-            protection before the two sources are diode-ORed onto the LV power
-            rail. The ORing diodes prevent either supply from backfeeding the
-            other while allowing the electronics to be powered from the
-            appropriate source in either operating state.
+            Each input first goes through a 4 A fuse. A 1N4007 is connected from
+            the protected input to ground so that if the supply polarity is reversed,
+            current is directed through the diode and the fuse opens instead of
+            applying the reversed supply to the electronics.
+        </p>
+
+        <p>
+            After that, each source goes through a B340 Schottky diode onto the
+            common LV power rail. The diodes OR the ready and charge supplies
+            together while preventing one source from back-feeding the other.
+            A 20 kΩ resistor holds the rail at ground when neither source is present.
         </p>
 
 
@@ -185,11 +212,78 @@
                  alt="Backplane 12 volt power management schematic">
 
             <figcaption>
-                Ready-power and charge-power inputs with independent protection
-                and diode ORing onto the common 12 V LV power rail.
+                Ready-power and charge-power inputs with 4 A fuses,
+                reverse-polarity protection, and Schottky ORing onto the
+                common LV power rail.
             </figcaption>
 
         </figure>
+
+
+        <h3>Shutdown power</h3>
+
+        <p>
+            Shutdown power (SD PWR) is kept separate from the normal LV rail.
+            It goes directly through the backplane to the BMS Parent and HV Control
+            Board and powers the parts of the system that have to respond directly
+            to the shutdown circuit.
+        </p>
+
+        <p>
+            On the HV Control Board, that includes the AIR drivers, their debug
+            circuitry, and the FDA217 photovoltaic driver for the solid-state
+            discharge switch. Keeping this supply separate lets those circuits
+            respond directly when the shutdown circuit opens instead of depending
+            on the rest of the LV electronics turning off.
+        </p>
+
+        <p>
+            This is also part of the fail-safe behavior of the discharge circuit.
+            During normal operation, SD PWR lets the FDA217 apply negative
+            gate-source bias to hold the normally-on depletion MOSFETs off. If
+            shutdown power disappears, that bias disappears and the discharge
+            switch returns to its conducting state.
+        </p>
+
+    </section>
+
+
+    <!-- SERVICE SECTION -->
+
+    <section class="project-section">
+
+        <h2>Service-section and sensor interfaces</h2>
+
+        <p>
+            The service-section connector handles the signals that need to leave
+            the electronics stack but stay inside the accumulator. This includes
+            connections to the AIRs, current sensor, IMD, E-meter, and temperature
+            sensors.
+        </p>
+
+        <p>
+            The current sensor and E-meter both need to communicate with the rest
+            of the vehicle electronics, so the backplane provides their connection
+            into the accumulator's LV system and CAN network. Keeping those
+            connections on the backplane also avoids running separate harnesses
+            directly to the BMS board.
+        </p>
+
+
+        <h3>E-meter temperature sensing</h3>
+
+        <p>
+            The E-meter interface carries low-voltage power, CAN, and a one-wire
+            temperature signal. The temperature sensor is physically away from the
+            electronics stack, so that signal enters the backplane from an external
+            wire before reaching the rest of the electronics.
+        </p>
+
+        <p>
+            I added an ESD protection stage on that line at the backplane interface.
+            That gives the external sensor connection a defined protection point
+            before the signal continues into the electronics stack.
+        </p>
 
     </section>
 
@@ -201,26 +295,24 @@
         <h2>HV isolation architecture</h2>
 
         <p>
-            A central design requirement is that the backplane can interconnect
-            electronics associated with the tractive system without becoming
-            part of the high-voltage domain itself.
+            The "HV isolated" part of the name doesn't mean the backplane itself
+            contains the HV isolation circuitry. The isolation happens on the
+            functional boards before any HV-referenced signal reaches the backplane.
         </p>
 
         <p>
-            Isolation is therefore handled on the functional boards at the
-            point where signals cross between HV-referenced and LV-referenced
-            circuitry. For example, HV-present and AIR weld-detection signals
-            are isolated before being passed into the low-voltage system.
-            Once these signals reach the backplane, they are already
-            LV-referenced and can be routed alongside the other control
-            interfaces.
+            For example, the HV-present and AIR weld circuits are connected to the
+            tractive system on the HV Control Board. Both cross the HV/LV boundary
+            through optocouplers there. By the time those signals reach the
+            backplane, they are already low-voltage logic signals and can be routed
+            alongside the other control signals.
         </p>
 
         <p>
-            This keeps the isolation boundary localized to the circuits that
-            require it and allows the backplane to remain a low-voltage
-            interconnect despite being physically located within the
-            accumulator electronics assembly.
+            That lets the backplane interconnect boards that contain 478.8 V
+            circuitry without routing tractive-system voltage through the backplane
+            itself. The 5 mm HV/LV boundary stays on the board that actually needs
+            it instead of extending across the entire electronics stack.
         </p>
 
     </section>
@@ -233,26 +325,32 @@
         <h2>Design approach</h2>
 
         <p>
-            The main challenge of the backplane is system integration rather
-            than complex signal processing. Connector locations are constrained
-            by the physical PCB stack, while the board must route a relatively
-            large number of power, communication, control, safety, and debug
-            signals between several different subsystems.
+            This board is more of a system-integration problem than a complicated
+            analog circuit. The hard part is keeping track of a lot of power,
+            communication, control, safety, sensor, and debug connections while
+            making the interfaces between each part of the accumulator obvious.
         </p>
 
         <p>
-            I developed the top-level schematic around the complete accumulator
-            architecture rather than treating each connector independently.
-            Signals are grouped by destination and function so the interfaces
-            between the BMS, HV Control Board, service section, and external
-            sensors remain clear.
+            I designed it from the system level down. I started with what each
+            subsystem needed to send or receive, grouped those signals by destination
+            and function, and then built the connector pinouts around that. That was
+            easier to reason about than starting with connectors and trying to route
+            everything afterward.
         </p>
 
         <p>
-            The backplane also provides a single place to define connector
-            pinouts and system-level net names. This reduces ambiguity during
-            harness assembly and makes it easier to trace a signal from an
-            external component through the electronics stack during debugging.
+            It also means the BMS Parent and HV Control Board have defined interfaces
+            instead of depending on a particular internal harness. If one of those
+            boards changes in a future revision, the backplane schematic gives us
+            one place to see exactly what the rest of the accumulator expects from it.
+        </p>
+
+        <p>
+            The final result is a much cleaner connection between the BMS,
+            HV Control Board, service-section electronics, sensors, and vehicle
+            harness while keeping the shared backplane entirely on the low-voltage
+            side of the accumulator.
         </p>
 
     </section>
