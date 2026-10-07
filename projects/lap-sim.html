@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Point-Mass EV Lap Simulation — Quinn Mendonca</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<nav>
+    <a class="site-name" href="../index.html">Quinn Mendonca</a>
+
+    <div class="nav-links">
+        <a href="../index.html#projects">Projects</a>
+        <a href="../index.html#about">About</a>
+    </div>
+</nav>
+
+
+<main class="project-page">
+
+    <!-- TITLE -->
+
+    <header class="project-intro">
+
+        <a class="back-link" href="../index.html">← Projects</a>
+
+        <h1>Point-Mass EV Lap Simulation</h1>
+
+        <p class="project-subtitle">
+            MATLAB · Vehicle dynamics · Accumulator sizing
+        </p>
+
+        <p class="project-lead">
+            Point-mass electric vehicle simulation developed to evaluate
+            accumulator configurations and predict vehicle performance over
+            Formula SAE endurance. The model couples longitudinal vehicle
+            dynamics with motor and battery constraints to estimate lap time,
+            energy consumption, voltage sag, current, state of charge, and
+            cell temperature.
+        </p>
+
+    </header>
+
+
+    <!-- MAIN RESULT -->
+
+    <figure class="full-image">
+
+        <img src="../images/lap-simulation/lap-sim.png"
+             alt="Point-mass EV lap simulation results">
+
+        <figcaption>
+            Simulated vehicle performance over a Formula SAE endurance event.
+        </figcaption>
+
+    </figure>
+
+
+    <!-- OVERVIEW -->
+
+    <section class="project-section">
+
+        <h2>Overview</h2>
+
+        <p>
+            I developed the simulation in MATLAB to support accumulator sizing
+            for Bruin Formula Racing's Formula SAE EV. Changing the number of
+            cells in series or parallel affects pack voltage, available current,
+            energy capacity, mass, voltage sag, and ultimately vehicle
+            performance, making pack selection a vehicle-level optimization
+            problem rather than simply an energy-capacity calculation.
+        </p>
+
+        <p>
+            The model represents the vehicle as a point mass and calculates its
+            longitudinal performance around the track subject to motor,
+            inverter, tire, and battery limitations. The resulting mechanical
+            power demand is coupled to a battery model to track electrical
+            behavior throughout the event.
+        </p>
+
+        <p>
+            I used the model to compare candidate accumulator configurations
+            and evaluate whether each could complete endurance while maintaining
+            acceptable current, voltage, energy, and thermal margins.
+        </p>
+
+        <h3>Model outputs</h3>
+
+        <ul>
+            <li>Vehicle speed and lap time</li>
+            <li>Motor torque and power demand</li>
+            <li>Accumulator current</li>
+            <li>Pack voltage and voltage sag</li>
+            <li>Energy consumption</li>
+            <li>State of charge</li>
+            <li>Cell temperature</li>
+            <li>Current-limited torque</li>
+        </ul>
+
+    </section>
+
+
+    <!-- VEHICLE MODEL -->
+
+    <section class="project-section">
+
+        <h2>Vehicle model</h2>
+
+        <p>
+            The simulation uses a point-mass longitudinal vehicle model. At
+            each point on the track, available acceleration is determined from
+            the forces acting on the vehicle and the torque available from the
+            electric powertrain.
+        </p>
+
+        <p>
+            Motor torque is converted to tractive force through the drivetrain
+            and is limited by the applicable powertrain and battery constraints.
+            Vehicle speed is then propagated around the track to generate the
+            lap-time and power-demand profiles used by the electrical model.
+        </p>
+
+        <div class="calculation-box">
+            F<sub>tractive</sub> = T<sub>wheel</sub> / r<sub>wheel</sub><br><br>
+
+            F<sub>net</sub> = F<sub>tractive</sub> − F<sub>resistive</sub><br><br>
+
+            a = F<sub>net</sub> / m
+        </div>
+
+        <figure class="content-image">
+
+            <div class="project-placeholder">
+                SPEED / TORQUE PLOT
+            </div>
+
+            <figcaption>
+                Simulated vehicle speed and powertrain demand around the track.
+            </figcaption>
+
+        </figure>
+
+    </section>
+
+
+    <!-- BATTERY MODEL -->
+
+    <section class="project-section">
+
+        <h2>Battery model</h2>
+
+        <p>
+            The vehicle model is coupled to an electrical model of the
+            accumulator. Mechanical power demand is converted into battery
+            power and current, allowing pack behavior to influence the
+            performance available to the vehicle.
+        </p>
+
+        <p>
+            Pack voltage is modeled as a function of cell voltage and voltage
+            sag under load. As the event progresses, the simulation tracks
+            energy removed from the accumulator and updates state of charge.
+            Current limits can then reduce the torque available to the vehicle
+            when the requested power would exceed the capability of the
+            selected pack configuration.
+        </p>
+
+        <figure class="content-image">
+
+            <div class="project-placeholder">
+                VOLTAGE / CURRENT / SOC PLOT
+            </div>
+
+            <figcaption>
+                Simulated accumulator voltage, current, and state of charge.
+            </figcaption>
+
+        </figure>
+
+    </section>
+
+
+    <!-- THERMAL MODEL -->
+
+    <section class="project-section">
+
+        <h2>Cell thermal model</h2>
+
+        <p>
+            The simulation also tracks cell temperature throughout the
+            endurance event. Resistive losses generated by battery current
+            contribute heat to the cells, allowing candidate pack
+            configurations to be compared not only by energy capacity and
+            performance but also by thermal loading.
+        </p>
+
+        <p>
+            This is particularly useful when comparing different parallel-cell
+            counts because reducing the number of parallel cells decreases pack
+            mass but increases the current carried by each individual cell.
+        </p>
+
+        <figure class="content-image">
+
+            <div class="project-placeholder">
+                CELL TEMPERATURE PLOT
+            </div>
+
+            <figcaption>
+                Predicted cell temperature over the endurance simulation.
+            </figcaption>
+
+        </figure>
+
+    </section>
+
+
+    <!-- PACK SIZING -->
+
+    <section class="project-section">
+
+        <h2>Accumulator sizing</h2>
+
+        <p>
+            I used the completed model to compare different series and parallel
+            cell configurations for the 2026–27 accumulator. Each configuration
+            changes pack voltage, capacity, current capability, mass, and
+            electrical losses, so the comparison was performed using the
+            complete endurance simulation rather than capacity alone.
+        </p>
+
+        <p>
+            The analysis led to selection of a 114s6p accumulator using
+            684 cells, with a maximum pack voltage of 478.8 V and approximately
+            7.35 kWh of nominal energy.
+        </p>
+
+        <figure class="content-image">
+
+            <div class="project-placeholder">
+                PACK COMPARISON PLOT / TABLE
+            </div>
+
+            <figcaption>
+                Comparison of candidate accumulator configurations.
+            </figcaption>
+
+        </figure>
+
+    </section>
+
+
+    <!-- EXAMPLE RESULT -->
+
+    <section class="project-section">
+
+        <h2>Endurance simulation</h2>
+
+        <p>
+            A representative 114s6p simulation beginning at 95% state of charge
+            used approximately 5.53 kWh over the modeled endurance event and
+            finished at approximately 26.6% state of charge. The simulated lap
+            time was approximately 70.8 seconds.
+        </p>
+
+        <p>
+            These results provided an estimate of the usable energy margin
+            remaining at the end of endurance while simultaneously checking
+            whether the pack could satisfy the vehicle's current and power
+            demands throughout the event.
+        </p>
+
+        <figure class="full-image">
+
+            <div class="project-placeholder board-layout">
+                FULL ENDURANCE RESULTS
+            </div>
+
+            <figcaption>
+                Endurance simulation results for the selected 114s6p accumulator.
+            </figcaption>
+
+        </figure>
+
+    </section>
+
+
+    <!-- DEVELOPMENT -->
+
+    <section class="project-section">
+
+        <h2>Model development</h2>
+
+        <p>
+            The simulation has been developed iteratively as better vehicle and
+            battery data became available. Rather than treating the lap model
+            and accumulator model independently, I progressively coupled the
+            electrical constraints back into the vehicle model so that battery
+            limitations can directly affect available torque and predicted
+            performance.
+        </p>
+
+        <p>
+            The model is continuing to evolve as measured vehicle and cell data
+            become available for comparison with simulation results.
+        </p>
+
+    </section>
+
+
+    <!-- LAST UPDATED -->
+
+    <div class="project-updated">
+        Last updated October 2026
+    </div>
+
+</main>
+
+
+<footer>
+    <p>Quinn Mendonca</p>
+    <p><a href="../index.html">Back to projects</a></p>
+</footer>
+
+</body>
+
+</html>
