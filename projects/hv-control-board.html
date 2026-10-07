@@ -19,6 +19,7 @@
     </div>
 </nav>
 
+
 <main class="project-page">
 
     <!-- TITLE -->
@@ -83,11 +84,12 @@
 
         <p>
             The board sits inside the accumulator as part of a three-PCB
-            electronics stack with the BMS Parent and Integration Board.
+            electronics stack with the BMS Parent and HV Isolated Backplane.
             Consolidating these functions inside the accumulator reduces
             external HV electronics and simplifies wiring between the
             accumulator, service section, and vehicle.
         </p>
+
 
         <h3>Main functions</h3>
 
@@ -101,6 +103,7 @@
             <li>HV indicator-light control</li>
             <li>Ready-to-move (RTM) light control</li>
         </ul>
+
 
         <figure class="content-image">
 
@@ -116,7 +119,7 @@
     </section>
 
 
-    <!-- REQUIREMENTS -->
+    <!-- DESIGN REQUIREMENTS -->
 
     <section class="project-section">
 
@@ -150,7 +153,7 @@
     </section>
 
 
-    <!-- TOP LEVEL -->
+    <!-- TOP LEVEL SCHEMATIC -->
 
     <figure class="content-image">
 
@@ -187,6 +190,7 @@
             of the commanded precharge state during debugging.
         </p>
 
+
         <figure class="content-image">
 
             <img src="../images/hv-control-board/precharge.png"
@@ -215,28 +219,10 @@
 
         <p>
             With a 650 µF inverter DC-link capacitance and a maximum pack
-            voltage of 478.8 V, the 2.2 kΩ precharge resistance gives a
+            voltage of 478.8 V, the 2.2 kΩ precharge resistor gives a
             theoretical 90% charge time of approximately 3.29 s, within the
-            5 s requirement.
-        </p>
-
-        <div class="calculation-box">
-            τ = RC = (2.2 kΩ)(650 µF) = 1.43 s<br><br>
-
-            t<sub>90</sub> = −τ ln(0.1) = 3.29 s<br><br>
-
-            I<sub>peak</sub> = 478.8 V / 2.2 kΩ = 218 mA<br><br>
-
-            P<sub>peak</sub> = (478.8 V)² / 2.2 kΩ = 104 W<br><br>
-
-            E<sub>cap</sub> = ½CV² = 74.5 J
-        </div>
-
-        <p>
-            The resistor therefore sees a relatively low current but a
-            short-duration high-power pulse during each precharge event.
-            Resistance and pulse-energy capability were selected together
-            rather than sizing the component from steady-state power alone.
+            5 s requirement. Resistor pulse-energy capability and thermal
+            requirements were evaluated for the 74.5 J precharge event.
         </p>
 
     </section>
@@ -259,8 +245,8 @@
             The MOSFET gates are driven by an FDA217 photovoltaic isolator,
             providing galvanic isolation between the low-voltage shutdown
             circuitry and the tractive system. The two MOSFETs are connected
-            back-to-back so their body diodes oppose one another, blocking
-            current through the MOSFET pair in the off state. Additional
+            back-to-back so their body diodes oppose one another, reducing
+            off-state leakage through the switching path. Additional
             gate-source resistor, capacitor, and clamp-diode footprints are
             included for tuning and protection during validation.
         </p>
@@ -269,9 +255,10 @@
             The depletion-mode devices are normally conducting at zero
             gate-source voltage. During normal vehicle operation, the isolated
             driver biases the MOSFETs off. Loss of the control bias returns
-            the devices toward their normally-on state, providing a passive
+            the devices toward their normally-on state, providing a fail-safe
             path toward activating discharge.
         </p>
+
 
         <figure class="content-image">
 
@@ -312,29 +299,126 @@
             increasingly important at several hundred volts.
         </p>
 
-        <div class="two-images">
+    </section>
 
-            <figure>
-                <div class="project-placeholder small">
-                    PROTOTYPE / BENCH PHOTO
-                </div>
 
-                <figcaption>
-                    Discharge prototype testing.
-                </figcaption>
-            </figure>
+    <!-- POWER RESISTOR THERMAL DESIGN -->
 
-            <figure>
-                <div class="project-placeholder small">
-                    SCOPE / TEST RESULT
-                </div>
+    <section class="project-section">
 
-                <figcaption>
-                    Discharge validation measurement.
-                </figcaption>
-            </figure>
+        <h2>Power resistor & thermal design</h2>
 
+        <p>
+            The precharge, discharge, and TSMP circuits each use high-power
+            resistors, but their electrical and thermal requirements are
+            different. Precharge and discharge handle short-duration energy
+            transfer to and from the inverter DC link, while the TSMP resistors
+            must tolerate continuous dissipation at maximum pack voltage.
+            I sized the resistor and heatsink for each operating case.
+        </p>
+
+
+        <h3>Precharge</h3>
+
+        <p>
+            Precharge uses a single 2.2 kΩ, 150 W Vishay LTO150H resistor.
+            With a 478.8 V accumulator and 650 µF DC-link capacitance, the
+            circuit reaches 90% of pack voltage in approximately 3.29 s.
+            The resistor initially dissipates 104.2 W and absorbs approximately
+            74.5 J during the precharge event.
+        </p>
+
+        <div class="calculation-box">
+            R = 2.2 kΩ<br><br>
+
+            τ = RC = 1.43 s<br><br>
+
+            t<sub>90</sub> = 3.29 s<br><br>
+
+            I<sub>peak</sub> = 0.218 A<br><br>
+
+            P<sub>peak</sub> = 104.2 W<br><br>
+
+            E<sub>resistor</sub> = 74.5 J<br><br>
+
+            P<sub>avg</sub> = 22.6 W<br><br>
+
+            θ<sub>SA</sub> ≤ 5.26 °C/W
         </div>
+
+        <p>
+            The thermal analysis resulted in a required heatsink thermal
+            resistance of 5.26 °C/W or lower. The resistor is paired with an
+            Ohmite FA-T220-38E heatsink using thermal interface material and
+            clip mounting to provide the required thermal path from the
+            resistor case.
+        </p>
+
+
+        <h3>Discharge</h3>
+
+        <p>
+            Active discharge uses a single 2.7 kΩ, 100 W Riedon PF2472
+            resistor. Starting from the maximum 478.8 V DC-link voltage, the
+            calculated time to fall below 60 V is approximately 3.65 s,
+            satisfying the 5 s discharge requirement. After 5 s, the predicted
+            DC-link voltage is approximately 27.8 V.
+        </p>
+
+        <div class="calculation-box">
+            R = 2.7 kΩ<br><br>
+
+            τ = RC = 1.755 s<br><br>
+
+            t<sub>60V</sub> = 3.65 s<br><br>
+
+            V(5 s) = 27.8 V<br><br>
+
+            I<sub>peak</sub> = 0.177 A<br><br>
+
+            P<sub>peak</sub> = 84.9 W<br><br>
+
+            E<sub>resistor</sub> = 74.5 J<br><br>
+
+            P<sub>avg</sub> = 20.4 W<br><br>
+
+            θ<sub>SA</sub> ≤ 5.6 °C/W
+        </div>
+
+        <p>
+            The calculated heatsink requirement is 5.6 °C/W or lower. The
+            discharge resistor is paired with an Ohmite FA-T220-25E heatsink.
+        </p>
+
+
+        <h3>TSMP resistors</h3>
+
+        <p>
+            Each tractive-system measurement-point line uses a 15 kΩ, 100 W
+            Vishay LTO100 resistor. Unlike precharge and discharge, the TSMP
+            resistors are sized for continuous operation. At maximum pack
+            voltage, a short between the measurement points produces
+            approximately 15.96 mA, with each resistor dissipating
+            approximately 3.82 W.
+        </p>
+
+        <div class="calculation-box">
+            R = 15 kΩ per TSMP line<br><br>
+
+            I<sub>short</sub> = 15.96 mA<br><br>
+
+            P<sub>resistor</sub> = 3.82 W<br><br>
+
+            P<sub>total</sub> = 7.64 W<br><br>
+
+            θ<sub>SA</sub> ≤ 13.2 °C/W
+        </div>
+
+        <p>
+            This gives a required heatsink thermal resistance of 13.2 °C/W or
+            lower. Each TSMP resistor is mounted to an Ohmite WA-T247-101E
+            heatsink.
+        </p>
 
     </section>
 
@@ -368,6 +452,7 @@
             the safety indication independent of a software voltage measurement.
         </p>
 
+
         <figure class="content-image">
 
             <img src="../images/hv-control-board/HV-present.png"
@@ -397,6 +482,7 @@
             the BMS to continuously generate the flashing waveform.
         </p>
 
+
         <figure class="content-image">
 
             <img src="../images/hv-control-board/RTM-LV.png"
@@ -421,15 +507,15 @@
             The AIR weld-detection circuit determines whether an accumulator
             isolation relay has remained closed after it has been commanded
             open. Two isolated solid-state switches configure the measurement
-            path so the voltage associated with an AIR can be checked while
+            path so the voltage associated with the AIR can be checked while
             maintaining isolation from the low-voltage control system.
         </p>
 
         <p>
-            When enabled, a 1 MΩ / 6.8 kΩ divider scales the measured voltage
-            for an LM393 comparator referenced to approximately 1.6 V. The
-            comparator output is inverted by a PMOS stage and transferred to
-            the low-voltage system through an optocoupler, providing an
+            When enabled, a high-impedance resistor divider scales the measured
+            voltage for an LM393 comparator referenced to approximately 1.6 V.
+            The comparator output is inverted by a PMOS stage and transferred
+            to the low-voltage system through an optocoupler, providing an
             isolated digital weld-status signal to the BMS.
         </p>
 
@@ -438,6 +524,7 @@
             disconnected when it is not required, preventing unwanted voltage
             across the sensing network in other operating states.
         </p>
+
 
         <figure class="content-image">
 
@@ -474,34 +561,10 @@
             larger accumulator electronics system.
         </p>
 
-        <div class="two-images">
-
-            <figure>
-                <div class="project-placeholder small">
-                    OLD BOARD / TEST SETUP
-                </div>
-
-                <figcaption>
-                    Previous-revision AIR weld-detection test setup.
-                </figcaption>
-            </figure>
-
-            <figure>
-                <div class="project-placeholder small">
-                    TEST RESULT
-                </div>
-
-                <figcaption>
-                    Previous-revision validation.
-                </figcaption>
-            </figure>
-
-        </div>
-
     </section>
 
 
-    <!-- PCB -->
+    <!-- PCB LAYOUT -->
 
     <section class="project-section">
 
@@ -510,34 +573,37 @@
         <p>
             The board is a four-layer design containing both low-voltage
             control electronics and circuitry connected to the 478.8 V
-            tractive system. The layout therefore uses physical separation
-            between the HV and LV regions, with a 5 mm keepout across the
-            isolation boundary and no low-voltage ground plane extending
-            beneath isolated high-voltage circuitry.
+            tractive system. The layout uses physical separation between
+            the HV and LV regions, with a 5 mm keepout across the isolation
+            boundary and no low-voltage ground plane extending beneath
+            isolated high-voltage circuitry.
         </p>
 
         <p>
             Ground pours and via stitching throughout the low-voltage region
             provide short return paths and tie the ground planes together.
             High-voltage functions are kept physically separated from these
-            low-voltage ground pours, and circuits that cross the HV/LV boundary
-            do so only through their intended isolation components.
+            low-voltage ground pours, and circuits that cross the HV/LV
+            boundary do so only through their intended isolation components.
         </p>
 
         <p>
-            The large precharge, discharge, and TSMP resistors use dedicated
-            heatsink mounting provisions. Connector placement and board
-            dimensions are constrained by the surrounding accumulator
-            enclosure and the three-PCB electronics stack.
+            The precharge, discharge, and TSMP power resistors use dedicated
+            heatsink mounting provisions incorporated into the PCB. Connector
+            placement and board dimensions are also constrained by the
+            accumulator enclosure and the three-PCB electronics stack.
         </p>
+
 
         <figure class="full-image">
 
             <img src="../images/hv-control-board/layout.png"
-                 alt="PCB layout">
+                 alt="HV Control Board PCB layout">
 
             <figcaption>
-                PCB layout and HV/LV isolation boundary.
+                PCB layout showing functional partitioning, ground pours,
+                via stitching, power-component mounting, and the HV/LV
+                isolation boundary.
             </figcaption>
 
         </figure>
@@ -571,26 +637,8 @@
             High-voltage circuits are validated incrementally rather than
             immediately applying full pack voltage. This is particularly
             important for the discharge and sensing circuits, where leakage,
-            device voltage stress, and isolation behavior may not be apparent
-            during low-voltage functional testing.
-        </p>
-
-        <figure class="content-image">
-
-            <div class="project-placeholder photo">
-                BENCH / BRING-UP PHOTO
-            </div>
-
-            <figcaption>
-                Board bring-up and validation.
-            </figcaption>
-
-        </figure>
-
-        <h3>Current status</h3>
-
-        <p>
-            Full-board and accumulator-level validation is currently in progress.
+            device voltage stress, thermal behavior, and isolation performance
+            may not be apparent during low-voltage functional testing.
         </p>
 
     </section>
