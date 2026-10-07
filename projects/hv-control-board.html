@@ -137,9 +137,7 @@
             The precharge system must charge the inverter DC link to at least
             90% of accumulator voltage within 5 seconds, while the discharge
             system must bring the tractive system below 60 V within 5 seconds
-            after shutdown. The PCB uses a four-layer stackup with a 5 mm HV/LV
-            separation and is packaged as part of a three-board electronics
-            stack within the accumulator.
+            after shutdown.
         </p>
 
         <ul>
@@ -161,7 +159,8 @@
              alt="HV Control Board top-level schematic">
 
         <figcaption>
-            Top-level schematic showing the HV/LV boundary and major functional blocks.
+            Top-level schematic showing the HV/LV boundary and major
+            functional blocks.
         </figcaption>
 
     </figure>
@@ -222,7 +221,7 @@
             voltage of 478.8 V, the 2.2 kΩ precharge resistor gives a
             theoretical 90% charge time of approximately 3.29 s, within the
             5 s requirement. Resistor pulse-energy capability and thermal
-            requirements were evaluated for the 74.5 J precharge event.
+            requirements were also evaluated for the 74.5 J precharge event.
         </p>
 
     </section>
@@ -236,9 +235,9 @@
 
         <p>
             The active discharge circuit removes energy stored on the
-            vehicle-side DC link after the accumulator is disconnected. A
-            2.7 kΩ discharge resistor is switched across the HV bus using a
-            pair of back-to-back 1000 V depletion-mode NMOSs.
+            vehicle-side DC link after the accumulator is disconnected.
+            A 2.7 kΩ discharge resistor is switched across the HV bus using
+            a pair of back-to-back 1000 V depletion-mode NMOSs.
         </p>
 
         <p>
@@ -246,17 +245,15 @@
             providing galvanic isolation between the low-voltage shutdown
             circuitry and the tractive system. The two MOSFETs are connected
             back-to-back so their body diodes oppose one another, reducing
-            off-state leakage through the switching path. Additional
-            gate-source resistor, capacitor, and clamp-diode footprints are
-            included for tuning and protection during validation.
+            off-state current through the discharge path.
         </p>
 
         <p>
-            The depletion-mode devices are normally conducting at zero
-            gate-source voltage. During normal vehicle operation, the isolated
-            driver biases the MOSFETs off. Loss of the control bias returns
-            the devices toward their normally-on state, providing a fail-safe
-            path toward activating discharge.
+            Because the depletion-mode devices are normally conducting at
+            zero gate-source voltage, the discharge path defaults toward its
+            conducting state without gate bias. During normal vehicle
+            operation, the isolated driver applies negative gate-source
+            voltage to turn the devices off.
         </p>
 
 
@@ -268,6 +265,42 @@
             <figcaption>
                 Solid-state discharge circuit using an isolated photovoltaic
                 driver and back-to-back depletion-mode NMOSs.
+            </figcaption>
+
+        </figure>
+
+
+        <h3>Switching simulation</h3>
+
+        <p>
+            I used LTspice to verify the switching behavior of the isolated
+            discharge stage at the maximum 478.8 V accumulator voltage. R2
+            in the simulation is the 2.7 kΩ discharge resistor connected in
+            series with the back-to-back depletion-mode NMOS switch.
+        </p>
+
+        <p>
+            With zero gate-source bias, the normally-on depletion-mode MOSFETs
+            conduct and approximately 177 mA flows through the discharge
+            resistor. When the FDA217 photovoltaic isolator applies
+            approximately −12.5 V between each gate and the common source,
+            the devices turn off and the discharge current falls to
+            approximately zero.
+        </p>
+
+
+        <figure class="full-image">
+
+            <img src="../images/hv-control-board/discharge-spice.png"
+                 alt="LTspice simulation of depletion-mode MOSFET discharge switching">
+
+            <figcaption>
+                LTspice switching simulation at 478.8 V. The upper plot shows
+                the gate-source voltage of both depletion-mode NMOSs, while
+                the lower plot shows current through R2, the 2.7 kΩ discharge
+                resistor. Applying negative gate bias turns the normally-on
+                discharge path off, reducing resistor current from approximately
+                177 mA to zero.
             </figcaption>
 
         </figure>
